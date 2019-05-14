@@ -1,0 +1,10 @@
+#wpadminbar .tgc-build-button a{
+    background:#008ec2;
+    color:white;
+}
+#wpadminbar .tgc-build-button:hover a{
+    background:#008ec2 !important;
+    color:white !important;
+}
+
+
