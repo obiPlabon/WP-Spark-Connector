@@ -340,20 +340,20 @@ if ( ! class_exists( 'TGM_Plugin_Activation' ) ) {
 				'oops'                            => __( 'Something went wrong with the plugin API.', 'wpspark' ),
 				'notice_can_install_required'     => _n_noop(
 					/* translators: 1: plugin name(s). */
-					'This theme requires the following plugin: %1$s.',
-					'This theme requires the following plugins: %1$s.',
+					'wpspark requires the following plugin: %1$s.',
+					'wpspark requires the following plugins: %1$s.',
 					'wpspark'
 				),
 				'notice_can_install_recommended'  => _n_noop(
 					/* translators: 1: plugin name(s). */
-					'This theme recommends the following plugin: %1$s.',
-					'This theme recommends the following plugins: %1$s.',
+					'wpspark recommends the following plugin: %1$s.',
+					'wpspark recommends the following plugins: %1$s.',
 					'wpspark'
 				),
 				'notice_ask_to_update'            => _n_noop(
 					/* translators: 1: plugin name(s). */
-					'The following plugin needs to be updated to its latest version to ensure maximum compatibility with this theme: %1$s.',
-					'The following plugins need to be updated to their latest version to ensure maximum compatibility with this theme: %1$s.',
+					'The following plugin needs to be updated to its latest version to ensure maximum compatibility with wpspark: %1$s.',
+					'The following plugins need to be updated to their latest version to ensure maximum compatibility with wpspark: %1$s.',
 					'wpspark'
 				),
 				'notice_ask_to_update_maybe'      => _n_noop(
@@ -396,7 +396,7 @@ if ( ! class_exists( 'TGM_Plugin_Activation' ) ) {
 				/* translators: 1: plugin name. */
 				'plugin_already_active'           => __( 'No action taken. Plugin %1$s was already active.', 'wpspark' ),
 				/* translators: 1: plugin name. */
-				'plugin_needs_higher_version'     => __( 'Plugin not activated. A higher version of %s is needed for this theme. Please update the plugin.', 'wpspark' ),
+				'plugin_needs_higher_version'     => __( 'Plugin not activated. A higher version of %s is needed for wpspark. Please update the plugin.', 'wpspark' ),
 				/* translators: 1: dashboard link. */
 				'complete'                        => __( 'All plugins installed and activated successfully. %1$s', 'wpspark' ),
 				'dismiss'                         => __( 'Dismiss this notice', 'wpspark' ),
