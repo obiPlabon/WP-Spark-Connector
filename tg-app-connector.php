@@ -21,9 +21,12 @@ if ( ! defined( 'WPINC' ) ) {
  */
 define( 'TGC_CORE_ROOT', untrailingslashit( plugin_dir_path( __FILE__ ) ) );
 
+require TGC_CORE_ROOT. '/libs/class-tgm-plugin-activation.php';
+
 /**
  * require files here
  */
+require TGC_CORE_ROOT. '/inc/plugin_activation.php';
 require TGC_CORE_ROOT. '/inc/connector.php';
 require TGC_CORE_ROOT. '/inc/admin_menu.php';
 require TGC_CORE_ROOT. '/inc/routes.php';

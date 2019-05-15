@@ -15,7 +15,7 @@ class TGC_Routes{
     }
 
     public function tgc_routes(){
-        register_rest_route('tg/v1', '/sitedata', array(
+        register_rest_route('wpspark', '/sitedata', array(
             'methods' => 'get',
             'callback' => array($this, 'tgc_pull_site_meta_data')
         ));
