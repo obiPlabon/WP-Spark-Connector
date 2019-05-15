@@ -21,6 +21,9 @@ if ( ! defined( 'WPINC' ) ) {
  */
 define( 'TGC_CORE_ROOT', untrailingslashit( plugin_dir_path( __FILE__ ) ) );
 
+/**
+* plugin activation library
+*/
 require TGC_CORE_ROOT. '/libs/class-tgm-plugin-activation.php';
 
 /**
