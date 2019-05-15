@@ -26,9 +26,11 @@ define( 'TGC_CORE_ROOT', untrailingslashit( plugin_dir_path( __FILE__ ) ) );
  */
 require TGC_CORE_ROOT. '/inc/connector.php';
 require TGC_CORE_ROOT. '/inc/admin_menu.php';
+require TGC_CORE_ROOT. '/inc/routes.php';
 
 function tgc_core_load(){
 	TGC_Admin_Menu::init();
+	TGC_Routes::init();
 }
 add_action('plugins_loaded', 'tgc_core_load');
 
