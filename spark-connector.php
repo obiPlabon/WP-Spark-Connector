@@ -24,12 +24,12 @@ define( 'SPARK_CORE_ROOT', untrailingslashit( plugin_dir_path( __FILE__ ) ) );
 /**
 * plugin activation library
 */
-require SPARK_CORE_ROOT. '/libs/class-tgm-plugin-activation.php';
+// require SPARK_CORE_ROOT. '/libs/class-tgm-plugin-activation.php';
 
 /**
  * require files here
  */
-require SPARK_CORE_ROOT. '/inc/plugin_activation.php';
+// require SPARK_CORE_ROOT. '/inc/plugin_activation.php';
 require SPARK_CORE_ROOT. '/inc/connector.php';
 require SPARK_CORE_ROOT. '/inc/admin_menu.php';
 require SPARK_CORE_ROOT. '/inc/routes.php';
