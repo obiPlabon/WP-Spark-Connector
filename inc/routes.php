@@ -30,12 +30,12 @@ class TGC_Routes{
 
         $logo_url = $this->custom_logo_url(get_custom_logo());
         
-        $site_data[] = [
+        $site_data = [
             // 'url' => site_url(),
             // 'info' => get_bloginfo('name'),
             // 'description' => get_bloginfo('description'),
             // 'version' => get_bloginfo('version'),
-            'icon' => get_site_icon_url(),
+            'favicon' => get_site_icon_url(),
             'logo' => $logo_url,
         ];
 
@@ -58,7 +58,7 @@ class TGC_Routes{
     }
 
     public function spark_get_build_status($request){
-        var_dump($request);
+        var_dump($request['sunny']);
         return 'I am request';
     }
 
