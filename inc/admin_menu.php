@@ -22,7 +22,7 @@ class TGC_Admin_Menu
     {
         # code...
         // add_menu_page($page_title, $menu_title, $capability, $menu_slug, $function, $icon_url, $position)
-        add_menu_page('WP Spark', 'WP Spark', 'manage_options', 'wpspark', array($this, 'tg_connector_admin_menu'), 'dashicons-admin-plugins', 2);
+        add_menu_page('Spark', 'Spark', 'manage_options', 'spark', array($this, 'tg_connector_admin_menu'), 'dashicons-admin-plugins', 2);
         
 
     }
@@ -39,7 +39,7 @@ class TGC_Admin_Menu
                             settings_fields("header_section");
                             
                             // all the add_settings_field callbacks is displayed here
-                            do_settings_sections("wpspark");
+                            do_settings_sections("spark");
                             // Add the submit button to serialize the options
                             
                             if(get_option('tg_app_token')){
@@ -73,16 +73,16 @@ class TGC_Admin_Menu
          * section name, display name, callback to print description of section, page to which section is attached.
          * add_settings_section($id, $title, $callback, $page)
          */
-        add_settings_section("header_section", "Application Options", array($this, "display_header_options_content"), "wpspark");
+        add_settings_section("header_section", "Application Options", array($this, "display_header_options_content"), "spark");
 
         /**
          * setting name, display name, callback to print form element, page in which field is displayed, section to which it belongs.
          * last field section is optional.
          * add_settings_field($id, $title, $callback, $page, $section, $args);
          */
-        add_settings_field("tg_app_token", "Token", array($this, "tgc_token"), "wpspark", "header_section");
-        // add_settings_field("tgc_woo_token", "WooCommerce Key", array($this, "tgc_woo_token"), "wpspark", "header_section");
-        // add_settings_field("tgc_woo_secret", "WooCommerce Secret", array($this, "tgc_woo_secret"), "wpspark", "header_section");
+        add_settings_field("tg_app_token", "Token", array($this, "tgc_token"), "spark", "header_section");
+        // add_settings_field("tgc_woo_token", "WooCommerce Key", array($this, "tgc_woo_token"), "spark", "header_section");
+        // add_settings_field("tgc_woo_secret", "WooCommerce Secret", array($this, "tgc_woo_secret"), "spark", "header_section");
 
         /**
          * section name, form element name, callback for sanitization
