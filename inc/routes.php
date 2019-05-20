@@ -15,9 +15,14 @@ class TGC_Routes{
     }
 
     public function tgc_routes(){
-        register_rest_route('wpspark', '/sitedata', array(
+        register_rest_route('spark', '/sitedata', array(
             'methods' => 'get',
             'callback' => array($this, 'tgc_pull_site_meta_data')
+        ));
+
+        register_rest_route('spark', '/buildstatus', array(
+            'methods' => 'POST',
+            'callback' => array($this, 'spark_get_build_status')
         ));
     }
 
@@ -50,6 +55,11 @@ class TGC_Routes{
         //     );
         $html = wp_get_attachment_url($custom_logo_id);
         return $html;    
+    }
+
+    public function spark_get_build_status($request){
+        var_dump($request);
+        return 'I am request';
     }
 
 
