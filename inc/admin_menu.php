@@ -31,31 +31,114 @@ class TGC_Admin_Menu
         <div class="tg-app-connector">
             <div class="wrap">
                 <div id="icon-options-general" class="icon32"></div>
-                    <!-- <h1> Options</h1> -->
-                    <form method="post" action="options.php">
-                        <?php
+
+                <div class="registration">
+                    <div class="uk-card uk-card-default uk-card-body uk-background-muted">
+                        <div class="uk-child-width-expand@s uk-flex uk-flex-middle">
+                            <div class="left logo">
+                                <img src="<?php echo plugin_dir_url(__DIR__). '/assets/images/wpspark-logo.png';?>" width="200px" alt="">
+                            </div>
+                            <div class="right uk-text-right status">
+                                <?php if(get_option('tg_app_token')):?>
+                                    <button href="#" id="register-input" class="uk-button uk-button-primary uk-button-medium">Connected</button>
+                                <?php else:?>
+                                    <button href="#" id="register-input" class="uk-button uk-button-danger uk-button-medium">Not connected</button>
+                                <?php endif;?>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+
+                    <div class="uk-card uk-card-default uk-card-body">
+                        <?php 
+                        $token = get_option('tg_app_token');
+                        if(! empty($token)): ?>
+                            <div class="uk-child-width-expand@s uk-grid" id="spark_auth_state" uk-grid>
+                                <div class="uk-padding">
+                                    <input 
+                                    id="spark-app-token"
+                                    class="uk-input uk-form-width-large" 
+                                    type="text" readonly placeholder="form-success" 
+                                    value="<?php echo get_option('tg_app_token'); ?>">
+                                    <button href="#" id="disconnect_application" class="uk-button uk-button-danger uk-button-medium">Disconnecte</button>
+                                    <p class="uk-form-horizontal">
+                                        <input type="submit" name="tgc-build" id="tgc-build" class="button button-primary" value="Build "  />
+                                        <input type="button" name="tgc-build-count" id="tgc-build-count" readonly class="button button-primary" value=<?php echo get_option('tg_app_build_count') ? get_option('tg_app_build_count') : '0' ; ?>  />
+                                    </p>
+                                    <div class="build-status" id="build-status">
+                                        <div class="uk-alert-primary uk-alert" style="display:none">
+                                            <a class="uk-alert-close" uk-close></a>
+                                            <p>You build request has been sent. Please wait for a while ..... </p>
+                                        </div>
+
+                                        <div class="uk-alert-success uk-alert" style="display:none">
+                                            <a class="uk-alert-close" uk-close></a>
+                                            <p>Congrutulatio! Your site has been successfully build for the new change.</p>
+                                        </div>
+
+                                        <div class="uk-alert-danger uk-alert" style="display:none">
+                                            <a class="uk-alert-close" uk-close></a>
+                                            <p>There are some problem occurs while build process is happenning. Please contact with support.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php else: ?>
+                            <div class="uk-child-width-expand@s uk-grid" id="spark_annonymus" uk-grid>
+                                <div class="uk-padding">
+                                    <p class="uk-text-large uk-text-bold">
+                                        <?php esc_html_e('Sign-up for API key', 'spark');?>
+                                    </p>
+                                    <p class="uk-text-secondary">Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi error pariatur neque labore sit temporibus alias nulla ipsam quo aperiam dolore, harum eum eveniet nisi inventore ad eos veritatis est.</p>
+                                </div>
+                                <div class="uk-padding">
+                                    <a href="http://app.wpspark.io/register" target="_blank" id="register-input" class="uk-button uk-button-danger uk-button-large uk-width-1-1 uk-margin-small-bottom">Register For API keys</a>
+                                    <a href="#" id="already-has-token" class="uk-button uk-button-primary uk-button-large uk-width-1-1">I already have an API keys</a>
+                                </div>
+                            </div>
+
+                            <div class="uk-child-width-expand@s uk-grid" id="spark_auth_state" uk-grid style="display:none;">
+                                
+                                <div class="uk-padding">
+                                    <ul class="uk-breadcrumb">
+                                        <li><a class="show_resgistration_state" href="#">Register Account</a></li>
+                                        <li><a href="#">Connect Account</a></li>
+                                    </ul>
+                                    <form method="post" action="options.php">
+                                        <?php
+                                        
+                                            //add_settings_section callback is displayed here. For every new section we need to call settings_fields.
+                                            // settings_fields("header_section");
+                                            
+                                            // all the add_settings_field callbacks is displayed here
+                                            do_settings_sections("spark");
+                                            // Add the submit button to serialize the options
+                                            
+                                            if(get_option('tg_app_token')){
+                                                ?>
+                                                <p>
+                                                    <input type="submit" name="submit" id="submit" class="button button-secondary" disabled="true" value="Connected"  />
+                                                    <input type="submit" name="tgc-build" id="tgc-build" class="button button-primary" value="Build "  />
+                                                    <input type="button" name="tgc-build-count" id="tgc-build-count" readonly class="button button-primary" value=<?php echo get_option('tg_app_build_count') ? get_option('tg_app_build_count') : '0' ; ?>  />
+                                                </p>
+                                                <?php
+                                            }else{
+                                                submit_button('Connect App'); 
+                                            }
+                                            
+                                        ?>          
+                                    </form>
+                                </div>
+                            </div>
+                        <?php endif; ?>
                         
-                            //add_settings_section callback is displayed here. For every new section we need to call settings_fields.
-                            settings_fields("header_section");
-                            
-                            // all the add_settings_field callbacks is displayed here
-                            do_settings_sections("spark");
-                            // Add the submit button to serialize the options
-                            
-                            if(get_option('tg_app_token')){
-                                ?>
-                                <p>
-                                    <input type="submit" name="submit" id="submit" class="button button-secondary" disabled="true" value="Connected"  />
-                                    <input type="submit" name="tgc-build" id="tgc-build" class="button button-primary" value="Build "  />
-                                    <input type="button" name="tgc-build-count" id="tgc-build-count" readonly class="button button-primary" value=<?php echo get_option('tg_app_build_count') ? get_option('tg_app_build_count') : '0' ; ?>  />
-                                </p>
-                                <?php
-                            }else{
-                                submit_button('Connect App'); 
-                            }
-                            
-                        ?>          
-                    </form>
+                    </div>
+                    
+                </div>
+
+                    <!-- <h1> Options</h1> -->
+                    
                 </div>
             </div>
         </div>
@@ -73,7 +156,7 @@ class TGC_Admin_Menu
          * section name, display name, callback to print description of section, page to which section is attached.
          * add_settings_section($id, $title, $callback, $page)
          */
-        add_settings_section("header_section", "Application Options", array($this, "display_header_options_content"), "spark");
+        add_settings_section("header_section", "", array($this, "display_header_options_content"), "spark");
 
         /**
          * setting name, display name, callback to print form element, page in which field is displayed, section to which it belongs.
@@ -110,7 +193,7 @@ class TGC_Admin_Menu
         <input type="text" 
             name="tg_app_token" 
             <?php echo get_option('tg_app_token') ? 'readonly': ''; ?> 
-            id="tg_app_token" style="width:60%" value="<?php echo get_option('tg_app_token'); ?>" 
+            id="tg_app_token" class="uk-input uk-form-width-large" style="width:60%" value="<?php echo get_option('tg_app_token'); ?>" 
         />
         <?php
     }

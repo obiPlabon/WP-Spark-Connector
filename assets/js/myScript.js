@@ -1,5 +1,14 @@
 jQuery( document ).ready( function($) {
 
+	$('#already-has-token').on('click', function(){
+		$('#spark_annonymus').css('display', 'none');
+		$('#spark_auth_state').css({'display':'block', 'margin-top':'0px'});
+	});
+	$('.show_resgistration_state').on('click', function(){
+		$('#spark_annonymus').css('display', 'flex');
+		$('#spark_auth_state').css({'display':'none'});
+	});
+
 	$('.tg-app-connector #submit').on('click', function(e){
 		e.preventDefault();
 		var getToken = $('.tg-app-connector #tg_app_token').val();
@@ -28,7 +37,9 @@ jQuery( document ).ready( function($) {
 					if(response && data == 'success'){
 						updateDbWithToken(response, getToken);
 						console.log('connected');
+
 					}
+					
 				},
 				error: function(error, xhr, error_text, statusText) {
 					console.log('response', error);
@@ -44,8 +55,11 @@ jQuery( document ).ready( function($) {
 
 	$('.tg-app-connector #tgc-build, #wp-admin-bar-tg-connector-build').on('click', function(e){
 		e.preventDefault();
-		var getToken = $('.tg-app-connector #tg_app_token').val();
+		$(this).attr("disabled", true);
+		var getToken = $('.tg-app-connector #spark-app-token').val();
 		var buildCount = +$('.tg-app-connector #tgc-build-count').val();
+		$('#build-status .uk-alert-primary').css('display', 'block');
+		$('#build-status .uk-alert-success').css('display', 'none');
 
 		$.ajax({
             url: 'http://app.wpspark.io/api/v1/build',
@@ -55,16 +69,28 @@ jQuery( document ).ready( function($) {
 				siteUrl: adminUrl.mysiteurl 
 			},
             success: function( response,  data, textStatus, xhr ) {
-				if(response && data == 'success'){
-					buildCount += 1;
-					$('.tg-app-connector #tgc-build-count').val(buildCount);
-					updateBuildStatus('1');
-					// updateDbWithToken(response, getToken);
-					console.log('connected');
-				}
+				setTimeout(function(){
+					if(response && data == 'success'){
+						buildCount += 1;
+						$('.tg-app-connector #tgc-build-count').val(buildCount);
+						updateBuildStatus('1');
+						// updateDbWithToken(response, getToken);
+						console.log('connected');
+						$('#build-status .uk-alert-primary').css('display', 'none');
+						$('#build-status .uk-alert-success').css('display', 'block');
+						$('.tg-app-connector #tgc-build').attr("disabled", false);
+					}
+				}, 5000)
+				
             },
             error: function(error, xhr, error_text, statusText) {
-                console.log('my error', xhr, 'error text',error_text, 'status text', statusText);
+				console.log('my error', xhr, 'error text',error_text, 'status text', statusText);
+				setTimeout(function(){
+					$('#build-status .uk-alert-primary').css('display', 'none');
+					$('#build-status .uk-alert-danger').css('display', 'block');
+					$('.tg-app-connector #tgc-build').attr("disabled", false);
+				}, 5000);
+				
 			},
 			
         });
@@ -83,6 +109,12 @@ jQuery( document ).ready( function($) {
 				data: response,
 				token: token
 			},
+			success:function(response){
+				location.reload();
+			},
+			error: function(error){
+				console.log(error.message);
+			}
 		})
 	}
 
@@ -100,6 +132,22 @@ jQuery( document ).ready( function($) {
 			},
 		})
 	}
+	$('#disconnect_application').on('click', function(e){
+		e.preventDefault();
+		$.ajax({
+            url: adminUrl.ajaxurl,
+			method: 'post',
+			data:{
+				action: 'spark_remove_token',
+			},
+			success: function( response,  data, textStatus, xhr ) {
+				location.reload();
+            },
+            error: function(error, xhr, error_text, statusText) {
+				console.log('my error', xhr, 'error text',error_text, 'status text', statusText);
+			},
+		})
+	});
 
 
 });
