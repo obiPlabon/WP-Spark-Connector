@@ -69,6 +69,7 @@ jQuery( document ).ready( function($) {
 				siteUrl: adminUrl.mysiteurl 
 			},
             success: function( response,  data, textStatus, xhr ) {
+				
 				setTimeout(function(){
 					if(response && data == 'success'){
 						buildCount += 1;

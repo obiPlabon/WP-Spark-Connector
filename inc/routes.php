@@ -58,8 +58,8 @@ class TGC_Routes{
     }
 
     public function spark_get_build_status($request){
-        var_dump($request['sunny']);
-        return 'I am request';
+        $status = $request['message'];
+        return $status;
     }
 
 

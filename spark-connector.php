@@ -61,8 +61,8 @@ function spark_load_script_to_admin(){
 
 	// wp_enqueue_script('spark-uikit-js', 'https://cdnjs.cloudflare.com/ajax/libs/uikit/3.1.5/js/uikit.min.js', array('jquery'), '1.0', true);
 	// wp_enqueue_script('spark-uikit-icon', 'https://cdnjs.cloudflare.com/ajax/libs/uikit/3.1.5/js/uikit-icons.min.js', array('jquery'), '1.0', true);
-	wp_enqueue_script('new-script', plugin_dir_url(__FILE__). 'assets/js/newScript.js', array('jquery'), '1.0', false);
-	wp_enqueue_script('form_handle', plugin_dir_url(__FILE__). 'assets/js/myScript.js', array('jquery'), '1.0', false);
+	// wp_enqueue_script('new-script', plugin_dir_url(__FILE__). 'assets/js/sparkScript.js', array('jquery'), '1.0', false);
+	wp_enqueue_script('form_handle', plugin_dir_url(__FILE__). 'assets/js/sparkScript.js', array('jquery'), '1.0', false);
 	wp_localize_script( 'form_handle', 'adminUrl', array(
 		'ajaxurl' => admin_url( 'admin-ajax.php' ),
 		'mysiteurl' =>  site_url(),
