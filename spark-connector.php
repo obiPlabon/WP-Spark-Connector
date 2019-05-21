@@ -35,7 +35,7 @@ require SPARK_CORE_ROOT. '/inc/admin_menu.php';
 require SPARK_CORE_ROOT. '/inc/routes.php';
 
 function spark_core_load(){
-	TGC_Admin_Menu::init();
+	Spark_Admin_Menu::init();
 	TGC_Routes::init();
 }
 add_action('plugins_loaded', 'spark_core_load');

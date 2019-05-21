@@ -11,7 +11,7 @@ jQuery( document ).ready( function($) {
 
 	$('.tg-app-connector #submit').on('click', function(e){
 		e.preventDefault();
-		var getToken = $('.tg-app-connector #tg_app_token').val();
+		var getToken = $('.tg-app-connector #spark_app_token').val();
 
 		if(! getToken.length){
 			alert('Please insert token first');
@@ -25,11 +25,11 @@ jQuery( document ).ready( function($) {
 				},
 				success: function( response,  data, textStatus, xhr ) {
 	
-					// $('.tg-app-connector #tg_app_token').val(response['token']);
+					// $('.tg-app-connector #spark_app_token').val(response['token']);
 					// $('.tg-app-connector #tg_woo_key').val(response['woocommerce_key']);
 					// $('.tg-app-connector #tg_woo_secret').val(response['woocommerce_secret']);
 	
-					$('.tg-app-connector #tg_app_token').attr("readonly", true);
+					$('.tg-app-connector #spark_app_token').attr("readonly", true);
 					$('.tg-app-connector #submit').val('Connected');
 					$('.tg-app-connector #submit').attr("disabled", true);
 					$('.tg-app-connector #submit').attr("id", "connected").attr("name", "connected");
@@ -53,11 +53,11 @@ jQuery( document ).ready( function($) {
 	});
 
 
-	$('.tg-app-connector #tgc-build, #wp-admin-bar-tg-connector-build').on('click', function(e){
+	$('.tg-app-connector #spark-build, #wp-admin-bar-tg-connector-build').on('click', function(e){
 		e.preventDefault();
 		$(this).attr("disabled", true);
 		var getToken = $('.tg-app-connector #spark-app-token').val();
-		var buildCount = +$('.tg-app-connector #tgc-build-count').val();
+		var buildCount = +$('.tg-app-connector #spark-build-count').val();
 		$('#build-status .uk-alert-primary').css('display', 'block');
 		$('#build-status .uk-alert-success').css('display', 'none');
 
@@ -73,13 +73,13 @@ jQuery( document ).ready( function($) {
 				setTimeout(function(){
 					if(response && data == 'success'){
 						buildCount += 1;
-						$('.tg-app-connector #tgc-build-count').val(buildCount);
+						$('.tg-app-connector #spark-build-count').val(buildCount);
 						updateBuildStatus('1');
 						// updateDbWithToken(response, getToken);
 						console.log('connected');
 						$('#build-status .uk-alert-primary').css('display', 'none');
 						$('#build-status .uk-alert-success').css('display', 'block');
-						$('.tg-app-connector #tgc-build').attr("disabled", false);
+						$('.tg-app-connector #spark-build').attr("disabled", false);
 					}
 				}, 5000)
 				
@@ -89,7 +89,7 @@ jQuery( document ).ready( function($) {
 				setTimeout(function(){
 					$('#build-status .uk-alert-primary').css('display', 'none');
 					$('#build-status .uk-alert-danger').css('display', 'block');
-					$('.tg-app-connector #tgc-build').attr("disabled", false);
+					$('.tg-app-connector #spark-build').attr("disabled", false);
 				}, 5000);
 				
 			},

@@ -1,5 +1,5 @@
 <?php
-class TGC_Admin_Menu
+class Spark_Admin_Menu
 {
     private static $instance;
     public static function init(){
@@ -11,14 +11,14 @@ class TGC_Admin_Menu
 
     private function __construct(){
         // add_shortcode($this->name, array($this, 'valley_adventure'));
-        add_action('admin_menu', array($this, 'tgc_admin_menu_init'));
-        add_action("admin_init", array($this, "display_options"));
-        add_action('admin_bar_menu', array($this, "tgc_add_toolbar_items"), 80);
+        add_action('admin_menu', array($this, 'spark_admin_menu_init'));
+        add_action("admin_init", array($this, "spark_display_options"));
+        add_action('admin_bar_menu', array($this, "spark_add_toolbar_items"), 80);
 
     }
 
 
-    public function tgc_admin_menu_init()
+    public function spark_admin_menu_init()
     {
         # code...
         // add_menu_page($page_title, $menu_title, $capability, $menu_slug, $function, $icon_url, $position)
@@ -39,7 +39,7 @@ class TGC_Admin_Menu
                                 <img src="<?php echo plugin_dir_url(__DIR__). '/assets/images/wpspark-logo.png';?>" width="200px" alt="">
                             </div>
                             <div class="right uk-text-right status">
-                                <?php if(get_option('tg_app_token')):?>
+                                <?php if(get_option('spark_app_token')):?>
                                     <button href="#" id="register-input" class="uk-button uk-button-primary uk-button-medium">Connected</button>
                                 <?php else:?>
                                     <button href="#" id="register-input" class="uk-button uk-button-danger uk-button-medium">Not connected</button>
@@ -52,7 +52,7 @@ class TGC_Admin_Menu
 
                     <div class="uk-card uk-card-default uk-card-body">
                         <?php 
-                        $token = get_option('tg_app_token');
+                        $token = get_option('spark_app_token');
                         if(! empty($token)): ?>
                             <div class="uk-child-width-expand@s uk-grid" id="spark_auth_state" uk-grid>
                                 <div class="uk-padding">
@@ -60,11 +60,11 @@ class TGC_Admin_Menu
                                     id="spark-app-token"
                                     class="uk-input uk-form-width-large" 
                                     type="text" readonly placeholder="form-success" 
-                                    value="<?php echo get_option('tg_app_token'); ?>">
+                                    value="<?php echo get_option('spark_app_token'); ?>">
                                     <button href="#" id="disconnect_application" class="uk-button uk-button-danger uk-button-medium">Disconnecte</button>
                                     <p class="uk-form-horizontal">
-                                        <input type="submit" name="tgc-build" id="tgc-build" class="button button-primary" value="Build "  />
-                                        <input type="button" name="tgc-build-count" id="tgc-build-count" readonly class="button button-primary" value=<?php echo get_option('tg_app_build_count') ? get_option('tg_app_build_count') : '0' ; ?>  />
+                                        <input type="submit" name="spark-build" id="spark-build" class="button button-primary" value="Build "  />
+                                        <input type="button" name="spark-build-count" id="spark-build-count" readonly class="button button-primary" value=<?php echo get_option('spark_build_count') ? get_option('spark_build_count') : '0' ; ?>  />
                                     </p>
                                     <div class="build-status" id="build-status">
                                         <div class="uk-alert-primary uk-alert" style="display:none">
@@ -107,25 +107,25 @@ class TGC_Admin_Menu
                                     </ul>
                                     <form method="post" action="options.php">
                                         <?php
-                                        
-                                            //add_settings_section callback is displayed here. For every new section we need to call settings_fields.
+
+                                            /**
+                                             * add_settings_section callback is displayed here. 
+                                             * For every new section we need to call settings_fields.
+                                             * settings_fields($option_group)
+                                             */
                                             // settings_fields("header_section");
                                             
-                                            // all the add_settings_field callbacks is displayed here
+                                            /**
+                                             * all the add_settings_field callbacks is displayed here
+                                             * do_settings_fields($page, $section)
+                                             * do_settings_sections($page)
+                                             */                                            
                                             do_settings_sections("spark");
-                                            // Add the submit button to serialize the options
                                             
-                                            if(get_option('tg_app_token')){
-                                                ?>
-                                                <p>
-                                                    <input type="submit" name="submit" id="submit" class="button button-secondary" disabled="true" value="Connected"  />
-                                                    <input type="submit" name="tgc-build" id="tgc-build" class="button button-primary" value="Build "  />
-                                                    <input type="button" name="tgc-build-count" id="tgc-build-count" readonly class="button button-primary" value=<?php echo get_option('tg_app_build_count') ? get_option('tg_app_build_count') : '0' ; ?>  />
-                                                </p>
-                                                <?php
-                                            }else{
-                                                submit_button('Connect App'); 
-                                            }
+                                            /**
+                                             * submit_button($text, $type, $name, $wrap, $other_attributes)
+                                             */
+                                            submit_button('Connect App'); 
                                             
                                         ?>          
                                     </form>
@@ -150,7 +150,7 @@ class TGC_Admin_Menu
      * 2. Add your settings field name by add_settings_field()
      * 3. Register settings fields to that settings fields by register_setting()
      */
-    public function display_options()
+    public function spark_display_options()
     {
         /**
          * section name, display name, callback to print description of section, page to which section is attached.
@@ -163,15 +163,15 @@ class TGC_Admin_Menu
          * last field section is optional.
          * add_settings_field($id, $title, $callback, $page, $section, $args);
          */
-        add_settings_field("tg_app_token", "Token", array($this, "tgc_token"), "spark", "header_section");
-        // add_settings_field("tgc_woo_token", "WooCommerce Key", array($this, "tgc_woo_token"), "spark", "header_section");
-        // add_settings_field("tgc_woo_secret", "WooCommerce Secret", array($this, "tgc_woo_secret"), "spark", "header_section");
+        add_settings_field("spark_app_token", "Token", array($this, "spark_token"), "spark", "header_section");
+        // add_settings_field("spark_woo_token", "WooCommerce Key", array($this, "spark_woo_token"), "spark", "header_section");
+        // add_settings_field("spark_woo_secret", "WooCommerce Secret", array($this, "spark_woo_secret"), "spark", "header_section");
 
         /**
          * section name, form element name, callback for sanitization
          * register_setting($option_group, $option_name, $sanitize_callback)
          */
-        register_setting("header_section", "tg_app_token");
+        register_setting("header_section", "spark_app_token");
         register_setting("header_section", "tg_woo_key");
         register_setting("header_section", "tg_woo_secret");
     }
@@ -186,25 +186,25 @@ class TGC_Admin_Menu
     /**
      * For settings body fields
      */
-    public function tgc_token()
+    public function spark_token()
     {
         //id and name of form element should be same as the setting name.
         ?>
         <input type="text" 
-            name="tg_app_token" 
-            <?php echo get_option('tg_app_token') ? 'readonly': ''; ?> 
-            id="tg_app_token" class="uk-input uk-form-width-large" style="width:60%" value="<?php echo get_option('tg_app_token'); ?>" 
+            name="spark_app_token" 
+            <?php echo get_option('spark_app_token') ? 'readonly': ''; ?> 
+            id="spark_app_token" class="uk-input uk-form-width-large" style="width:60%" value="<?php echo get_option('spark_app_token'); ?>" 
         />
         <?php
     }
-    public function tgc_woo_token()
+    public function spark_woo_token()
     {   
         ?>
         <input type="text" name="tg_woo_key" id="tg_woo_key" readonly style="width:60%" value="<?php echo get_option('tg_woo_key'); ?>" />
         <?php
     }
     
-    public function tgc_woo_secret()
+    public function spark_woo_secret()
     {   
         ?>
         <input type="text" name="tg_woo_secret" id="tg_woo_secret" readonly style="width:60%" value="<?php echo get_option('tg_woo_secret'); ?>" />
@@ -212,15 +212,15 @@ class TGC_Admin_Menu
     }
 
 
-    public function tgc_add_toolbar_items($admin_bar){
-        if(get_option('tg_app_token')){
+    public function spark_add_toolbar_items($admin_bar){
+        if(get_option('spark_app_token')){
             $admin_bar->add_menu( array(
                 'id'    => 'tg-connector-build',
                 'title' => 'Build',
                 'href'  => '#',
                 'meta'  => array(
                     'title' => __('Build'),    
-                    'class' => __('tgc-build-button')
+                    'class' => __('spark-build-button')
                 ),
             ));
             // $admin_bar->add_menu( array(
