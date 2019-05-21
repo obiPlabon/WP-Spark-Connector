@@ -2,6 +2,8 @@
 class Spark_Admin_Menu
 {
     private static $instance;
+    private $wpdb;
+    private $table_name;
     public static function init(){
         if(null == self::$instance){
             self::$instance = new self;
@@ -10,6 +12,10 @@ class Spark_Admin_Menu
     }
 
     private function __construct(){
+        global $wpdb;
+		$this->wpdb = $wpdb;
+
+		$this->table_name = $this->wpdb->prefix . 'spark_build';
         // add_shortcode($this->name, array($this, 'valley_adventure'));
         add_action('admin_menu', array($this, 'spark_admin_menu_init'));
         add_action("admin_init", array($this, "spark_display_options"));
@@ -82,6 +88,36 @@ class Spark_Admin_Menu
                                             <p>There are some problem occurs while build process is happenning. Please contact with support.</p>
                                         </div>
                                     </div>
+
+                                    <?php 
+                                    $build_data = $this->spark_get_build_data();
+                                    if($build_data):
+                                    ?>
+                                    
+                                    <table class="uk-table uk-table-middle uk-table-divider uk-table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th class="uk-width-small">Id</th>
+                                                <th>Time</th>
+                                                <th>Message</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php foreach($build_data as $data):?>
+                                            <tr>
+                                                <td><?php echo $data->id; ?></td>
+                                                <td><?php echo $data->time; ?></td>
+                                                <td><?php echo $data->message; ?></td>
+                                                <td><?php echo $data->status; ?></td>
+                                                <?php if( $data->status != '200'):?>
+                                                    <td><button class="uk-button uk-button-default" type="button">Check Status</button></td>
+                                                <?php endif;?>
+                                            </tr>
+                                            <?php endforeach;?>
+                                        </tbody>
+                                    </table>
+                                    <?php endif;?>
                                 </div>
                             </div>
                         <?php else: ?>
@@ -246,6 +282,10 @@ class Spark_Admin_Menu
             //     ),
             // ));
         }
+    }
+
+    public function spark_get_build_data(){
+        return $this->wpdb->get_results( "SELECT * FROM {$this->table_name}");
     }
     
 

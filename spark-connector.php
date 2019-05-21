@@ -40,6 +40,14 @@ function spark_core_load(){
 }
 add_action('plugins_loaded', 'spark_core_load');
 
+/**
+ * create spark build table
+ */
+function spark_create_build_table(){
+	require_once SPARK_CORE_ROOT. '/inc/build_table.php';
+	Spark_Build::spark_create_build_table();
+}
+register_activation_hook( __FILE__, 'spark_create_build_table' );
 
 /**
  * Flush rewrite rules on 

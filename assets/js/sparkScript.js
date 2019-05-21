@@ -106,7 +106,7 @@ jQuery( document ).ready( function($) {
             url: adminUrl.ajaxurl,
 			method: 'post',
 			data:{
-				action: 'get_connector_app_response',
+				action: 'spark_get_connector_app_response',
 				data: response,
 				token: token
 			},

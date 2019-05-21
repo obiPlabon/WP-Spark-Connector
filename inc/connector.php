@@ -1,8 +1,8 @@
 <?php
-add_action('wp_ajax_get_connector_app_response', 'get_connector_app_response');
-add_action('wp_ajax_nopriv_get_connector_app_response', 'get_connector_app_response');
+add_action('wp_ajax_spark_get_connector_app_response', 'spark_get_connector_app_response');
+add_action('wp_ajax_nopriv_spark_get_connector_app_response', 'spark_get_connector_app_response');
 
-function get_connector_app_response(){
+function spark_get_connector_app_response(){
 	$data = $_POST['data'];
 	$token = $_POST['token'];
 	$token_status = add_option( 'spark_app_token', $token, '', 'yes');
@@ -19,14 +19,35 @@ function update_build_status(){
 	$data = (int) $data;
 	$build_count = add_option( 'spark_build_count', $data, '', 'yes');
 
+	$db_time = current_time( 'mysql' );
+	$message = 'Start building';
+	$status = '202';
+	$insert_status = spark_insert_into_build_table($db_time, $message, $status);
+
 	if(get_option('spark_build_count')){
 		$today_build_number = get_option('spark_build_count');
 		$today_build_number += $data;
 		$update_status = update_option('spark_build_count', $today_build_number, 'yes');
 		var_dump('update status', $update_status);
 	}
-	var_dump($build_count);
+	var_dump($build_count, $insert_status);
 	die();
+}
+
+function spark_insert_into_build_table($time, $message, $status){
+	global $wpdb;
+	$table_name = $wpdb->prefix . 'spark_build';
+	
+	$data_insert_status = $wpdb->insert( 
+		$table_name, 
+		array( 
+			'time' => $time, 
+			'message' => $message, 
+			'status' => $status, 
+		) 
+	);
+	return $data_insert_status;
+
 }
 
 
