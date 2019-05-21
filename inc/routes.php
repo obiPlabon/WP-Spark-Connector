@@ -2,6 +2,10 @@
 class TGC_Routes{
 
     private static $instance;
+    private $wpdb;
+    private $table_name;
+
+
     public static function init(){
         if(null === self::$instance ){
             self::$instance = new self;
@@ -10,6 +14,10 @@ class TGC_Routes{
     }
 
     private function __construct(){
+        global $wpdb;
+		$this->wpdb = $wpdb;
+
+		$this->table_name = $this->wpdb->prefix . 'spark_build';
         add_action( 'rest_api_init', array($this, 'tgc_routes') );
 
     }
@@ -77,18 +85,37 @@ class TGC_Routes{
          */
         $build_message_in_db = get_option('spark_build_message');
         $build_status_in_db = get_option('spark_build_status');
+        $null_row = $this->wpdb->get_row( "SELECT * FROM {$this->table_name} WHERE status='null'" );
         
         if($build_message_in_db && $build_status_in_db){
+            if($null_row){
+                $null_id = $null_row->id;
+                $this->spark_build_data_update($null_id, $request_message, $request_status);
+            }
             $update_build_message = update_option('spark_build_message', $request_message, 'yes');
             $update_build_status = update_option('spark_build_status', $request_status, 'yes');
             return 'update build message to db - '. $update_build_message .' - update build status to db - '. $update_build_status;
         }else{
+            if($null_row){
+                $null_id = $null_row->id;
+                $this->spark_build_data_update($null_id, $request_message, $request_status);
+            }
             $add_build_message = add_option('spark_build_message', $request_message, '', 'yes');
             $add_build_status = add_option('spark_build_status', $request_status, '', 'yes');
             return 'add build message to db - '.$add_build_message .' - add build status to db - '. $add_build_status;
         }
         
     }
+
+    public function spark_build_data_update( $id, $message, $status ) {
+        $this->wpdb->update( $this->table_name, 
+            array(
+                'message' => $message,
+                'status' => $status
+            ), 
+            array( 'id' => $id ) 
+        );
+	}
 
 
 }

@@ -21,7 +21,7 @@ function update_build_status(){
 
 	$db_time = current_time( 'mysql' );
 	$message = 'Start building';
-	$status = '202';
+	$status = 'null';
 	$insert_status = spark_insert_into_build_table($db_time, $message, $status);
 
 	if(get_option('spark_build_count')){
