@@ -58,8 +58,36 @@ class TGC_Routes{
     }
 
     public function spark_get_build_status($request){
-        $status = $request['message'];
-        return $status;
+        $request_message = $request['message'];
+        $request_status = $request['status'];
+        /**
+         * build message status
+         * building - 201
+         * published - 200
+         * failed - 500
+         * =================
+         * At first check if there is any data saved 
+         * Against build status 
+         * if not then create a new record against that data
+         * if exist then update that record 
+         * add_option($option, $value, $deprecated, $autoload)
+         * get_option($option, $default)
+         * delete_option($option)
+         * update_option($option, $value, $autoload)
+         */
+        $build_message_in_db = get_option('spark_build_message');
+        $build_status_in_db = get_option('spark_build_status');
+        
+        if($build_message_in_db && $build_status_in_db){
+            $update_build_message = update_option('spark_build_message', $request_message, 'yes');
+            $update_build_status = update_option('spark_build_status', $request_status, 'yes');
+            return 'update build message to db - '. $update_build_message .' - update build status to db - '. $update_build_status;
+        }else{
+            $add_build_message = add_option('spark_build_message', $request_message, '', 'yes');
+            $add_build_status = add_option('spark_build_status', $request_status, '', 'yes');
+            return 'add build message to db - '.$add_build_message .' - add build status to db - '. $add_build_status;
+        }
+        
     }
 
 
