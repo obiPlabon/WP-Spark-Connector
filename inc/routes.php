@@ -85,7 +85,7 @@ class TGC_Routes{
          */
         $build_message_in_db = get_option('spark_build_message');
         $build_status_in_db = get_option('spark_build_status');
-        $null_row = $this->wpdb->get_row( "SELECT * FROM {$this->table_name} WHERE status='null'" );
+        $null_row = $this->wpdb->get_row( "SELECT * FROM {$this->table_name} ORDER BY id DESC LIMIT 1" );
         
         if($build_message_in_db && $build_status_in_db){
             if($null_row){

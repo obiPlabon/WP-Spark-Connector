@@ -61,6 +61,13 @@ class Spark_Admin_Menu
                         $token = get_option('spark_app_token');
                         if(! empty($token)): ?>
                             <div class="uk-child-width-expand@s uk-grid" id="spark_auth_state" uk-grid>
+
+                                <?php 
+                                    $build_data = $this->spark_get_build_data();
+                                    $last_build_data = $this->get_last_build_row();
+                                    
+                                ?>
+
                                 <div class="uk-padding">
                                     <input 
                                     id="spark-app-token"
@@ -69,7 +76,13 @@ class Spark_Admin_Menu
                                     value="<?php echo get_option('spark_app_token'); ?>">
                                     <button href="#" id="disconnect_application" class="uk-button uk-button-danger uk-button-medium">Disconnecte</button>
                                     <p class="uk-form-horizontal">
-                                        <input type="submit" name="spark-build" id="spark-build" class="button button-primary" value="Build "  />
+                                        <input 
+                                        type="submit" 
+                                        name="spark-build" 
+                                        id="spark-build" 
+                                        <?php echo ($last_build_data->status == 'null')  || ($last_build_data->status == '201') ? 'disabled=true' : '' ;  ?>
+                                        class="button button-primary" 
+                                        value="Build "  />
                                         <input type="button" name="spark-build-count" id="spark-build-count" readonly class="button button-primary" value=<?php echo get_option('spark_build_count') ? get_option('spark_build_count') : '0' ; ?>  />
                                     </p>
                                     <div class="build-status" id="build-status">
@@ -89,11 +102,8 @@ class Spark_Admin_Menu
                                         </div>
                                     </div>
 
-                                    <?php 
-                                    $build_data = $this->spark_get_build_data();
-                                    if($build_data):
-                                    ?>
                                     
+                                    <?php if($build_data): ?>
                                     <table class="uk-table uk-table-middle uk-table-divider uk-table-striped">
                                         <thead>
                                             <tr>
@@ -110,8 +120,12 @@ class Spark_Admin_Menu
                                                 <td><?php echo $data->time; ?></td>
                                                 <td><?php echo $data->message; ?></td>
                                                 <td><?php echo $data->status; ?></td>
-                                                <?php if( $data->status != '200'):?>
-                                                    <td><button class="uk-button uk-button-default" type="button">Check Status</button></td>
+                                                <?php if( $data->status == '200'):?>
+                                                    <td><button class="uk-button uk-button-default" type="button">Success</button></td>
+                                                <?php elseif($data->status == '500'): ?>
+                                                    <td><button class="uk-button uk-button-default" type="button">Build Failed</button></td>
+                                                <?php else: ?>
+                                                    <td><span class="uk-button uk-button-default" type="button">Check Status</span></td>
                                                 <?php endif;?>
                                             </tr>
                                             <?php endforeach;?>
@@ -285,7 +299,10 @@ class Spark_Admin_Menu
     }
 
     public function spark_get_build_data(){
-        return $this->wpdb->get_results( "SELECT * FROM {$this->table_name}");
+        return $this->wpdb->get_results( "SELECT * FROM {$this->table_name} ORDER BY id DESC");
+    }
+    public function get_last_build_row(){
+        return $this->wpdb->get_row( "SELECT * FROM {$this->table_name} ORDER BY id DESC LIMIT 1");
     }
     
 
