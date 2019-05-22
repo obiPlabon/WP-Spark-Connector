@@ -132,14 +132,31 @@ class Spark_Admin_Menu
                                             <tr>
                                                 <td><?php echo $data->id; ?></td>
                                                 <td><?php echo $data->time; ?></td>
-                                                <td><?php echo $data->message; ?></td>
-                                                <td><?php echo $data->status; ?></td>
+                                                <td>
+                                                    <span class="
+                                                        <?php 
+                                                            if($data->status == '200'): 
+                                                                echo 'uk-alert uk-alert-success';
+                                                            elseif($data->status == '201'):
+                                                                echo 'uk-alert uk-alert-warning';
+                                                            elseif($data->status == '500'):
+                                                                echo 'uk-alert uk-alert-danger';
+                                                            else:
+                                                                echo 'uk-alert uk-alert-primary';
+                                                            endif;
+
+                                                        ?>
+                                                    ">
+                                                        <?php echo ucwords($data->message); ?>
+                                                    </span>
+                                                </td>
+                                                <td><?php echo ucwords($data->status); ?></td>
                                                 <?php if( $data->status == '200'):?>
-                                                    <td><button class="uk-button uk-button-default" type="button">Success</button></td>
+                                                    <td><button class="uk-button uk-button-default uk-alert-success" type="button">Success</button></td>
                                                 <?php elseif($data->status == '500'): ?>
-                                                    <td><button class="uk-button uk-button-default" type="button">Build Failed</button></td>
+                                                    <td><button class="uk-button uk-button-default uk-alert-danger" type="button">Build Failed</button></td>
                                                 <?php else: ?>
-                                                    <td><span class="uk-button uk-button-default" type="button">Check Status</span></td>
+                                                    <td><span id="check-build-status" class="uk-button uk-button-default uk-alert-primary" type="button">Check Status</span></td>
                                                 <?php endif;?>
                                             </tr>
                                             <?php endforeach;?>
