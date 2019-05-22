@@ -174,9 +174,11 @@ class Spark_Admin_Menu
                                     </p>
                                     <p class="uk-text-secondary">Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi error pariatur neque labore sit temporibus alias nulla ipsam quo aperiam dolore, harum eum eveniet nisi inventore ad eos veritatis est.</p>
                                 </div>
-                                <div class="uk-padding">
-                                    <a href="http://app.wpspark.io/register" target="_blank" id="register-input" class="uk-button uk-button-danger uk-button-large uk-width-1-1 uk-margin-small-bottom">Register For API keys</a>
-                                    <a href="#" id="already-has-token" class="uk-button uk-button-primary uk-button-large uk-width-1-1">I already have an API keys</a>
+                                <div class="uk-padding uk-text-center">
+                                    
+                                    <a href="http://app.wpspark.io/register" target="_blank" id="register-input" class="uk-button uk-button-danger uk-button-large uk-margin-small-bottom">Register For API keys</a>
+                                    <br/>
+                                    <a href="#" id="already-has-token" class="uk-button uk-button-primary uk-button-large">Already have API keys</a>
                                 </div>
                             </div>
 
