@@ -164,11 +164,11 @@ jQuery( document ).ready( function($) {
 				action: 'spark_check_build_status',
 				buildId: buildId
 			},
+			beforeSend: function(){
+				$('.'+ rowClass + '.check-status-button span').text('Checking Statuss');
+			},
 			success: function(response){
 				var data = JSON.parse(response);
-				console.log(data);
-				// var buildMessage = response.message;
-				// var buildStatus = response.status;
 				$('.'+ rowClass + '.build-message > span').text(data.message);
 				$('.'+ rowClass + '.build-status').text(data.status);
 				

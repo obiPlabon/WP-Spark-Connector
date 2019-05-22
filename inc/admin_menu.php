@@ -153,11 +153,11 @@ class Spark_Admin_Menu
                                                 </td>
                                                 <td class="build-status"><?php echo ucwords($data->status); ?></td>
                                                 <?php if( $data->status == '200'):?>
-                                                    <td class="check-status-button"><span class="uk-text-success">Success</span></td>
+                                                    <td class="check-status-button uk-text-truncate"><span class="uk-text-success">Success</span></td>
                                                 <?php elseif($data->status == '500'): ?>
-                                                    <td class="check-status-button"><span class="uk-text-danger">Build Failed</span></td>
+                                                    <td class="check-status-button uk-text-truncate"><span class="uk-text-danger">Build Failed</span></td>
                                                 <?php else: ?>
-                                                    <td class="check-status-button"><span id="check-build-status" class="check-build-status uk-button uk-button-default uk-alert-primary" type="button">Check Status</span></td>
+                                                    <td class="check-status-button uk-text-truncate"><span id="check-build-status" class="check-build-status uk-button uk-button-default uk-alert-primary" type="button">Check Status</span></td>
                                                 <?php endif;?>
                                             </tr>
                                             <?php endforeach;?>
