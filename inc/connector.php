@@ -68,5 +68,23 @@ function spark_remove_token(){
 	die();
 }
 
+add_action('wp_ajax_spark_check_build_status', 'spark_check_build_status');
+add_action('wp_ajax_nopriv_spark_check_build_status', 'spark_check_build_status');
+function spark_check_build_status(){
+	try {
+		global $wpdb;
+		$table_name = $wpdb->prefix . 'spark_build';
+		$build_id = $_REQUEST['buildId'];
+	
+		$get_build_status_data = $wpdb->get_row( "SELECT * FROM {$table_name} WHERE id={$build_id}" );
+		echo json_encode($get_build_status_data);
+	}
+	catch(Exception $e){
+		echo 'Message: '.$e->getMessage();
+	}
+	
+	
+	die();
+}
 
 ?>

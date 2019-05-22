@@ -69,19 +69,19 @@ jQuery( document ).ready( function($) {
 				siteUrl: adminUrl.mysiteurl 
 			},
             success: function( response,  data, textStatus, xhr ) {
-				
+				updateBuildStatus('1');
 				setTimeout(function(){
 					if(response && data == 'success'){
 						buildCount += 1;
 						$('.tg-app-connector #spark-build-count').val(buildCount);
-						updateBuildStatus('1');
+						// updateBuildStatus('1');
 						// updateDbWithToken(response, getToken);
 						console.log('connected');
 						$('#build-status .uk-alert-primary').css('display', 'none');
 						$('#build-status .uk-alert-success').css('display', 'block');
 						$('.tg-app-connector #spark-build').attr("disabled", false);
 					}
-				}, 5000)
+				}, 50000)
 				
             },
             error: function(error, xhr, error_text, statusText) {
@@ -90,7 +90,7 @@ jQuery( document ).ready( function($) {
 					$('#build-status .uk-alert-primary').css('display', 'none');
 					$('#build-status .uk-alert-danger').css('display', 'block');
 					$('.tg-app-connector #spark-build').attr("disabled", false);
-				}, 5000);
+				}, 50000);
 				
 			},
 			
@@ -135,20 +135,57 @@ jQuery( document ).ready( function($) {
 	}
 	$('#disconnect_application').on('click', function(e){
 		e.preventDefault();
+		var disconnect = confirm('Are you sure to disconnect ?');
+		if(disconnect){
+			$.ajax({
+				url: adminUrl.ajaxurl,
+				method: 'post',
+				data:{
+					action: 'spark_remove_token',
+				},
+				success: function( response,  data, textStatus, xhr ) {
+					location.reload();
+				},
+				error: function(error, xhr, error_text, statusText) {
+					console.log('my error', xhr, 'error text',error_text, 'status text', statusText);
+				},
+			})
+		}
+		
+	});
+
+	$('.check-build-status').on('click', function(e){
+		var buildId = $(this).parents('tr').find('.build-id').text();
+		var rowClass = $(this).parents('tr').attr('class');
 		$.ajax({
-            url: adminUrl.ajaxurl,
+			url: adminUrl.ajaxurl,
 			method: 'post',
 			data:{
-				action: 'spark_remove_token',
+				action: 'spark_check_build_status',
+				buildId: buildId
 			},
-			success: function( response,  data, textStatus, xhr ) {
-				location.reload();
-            },
-            error: function(error, xhr, error_text, statusText) {
-				console.log('my error', xhr, 'error text',error_text, 'status text', statusText);
+			success: function(response){
+				var data = JSON.parse(response);
+				console.log(data);
+				// var buildMessage = response.message;
+				// var buildStatus = response.status;
+				$('.'+ rowClass + '.build-message > span').text(data.message);
+				$('.'+ rowClass + '.build-status').text(data.status);
+				
+				if(data.status == '200'){
+					$('.'+ rowClass + '.check-status-button > span').removeClass('uk-alert-primary').addClass('uk-alert-success').text('Success');
+				}else if(data.status == '500'){
+					$('.'+ rowClass + '.check-status-button > span').removeClass('uk-alert-primary').addClass('uk-alert-danger').text('Build Failed');
+				}else{
+					$('.'+ rowClass + '.check-status-button span').text('Check Status');
+				}
+
 			},
+			error: function(error){
+				console.log(error.message);
+			}
 		})
-	});
+	})
 
 
 });

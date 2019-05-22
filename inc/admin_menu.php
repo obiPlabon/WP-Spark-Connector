@@ -60,9 +60,9 @@ class Spark_Admin_Menu
                                         <?php echo ($last_build_data->status == 'null')  || ($last_build_data->status == '201') ? 'disabled=true' : '' ;  ?>
                                         class="uk-button uk-button-primary uk-button-medium" 
                                         >Build</button>
-                                        <button name="spark-build-count" id="spark-build-count" disabled="true" class="uk-button uk-button-primary uk-button-medium">
-                                            <?php echo get_option('spark_build_count') ? get_option('spark_build_count') : '0' ; ?>
-                                        </button>
+                                        <!-- <button name="spark-build-count" id="spark-build-count" disabled="true" class="uk-button uk-button-primary uk-button-medium">
+                                            <?php //echo get_option('spark_build_count') ? get_option('spark_build_count') : '0' ; ?>
+                                        </button> -->
                                         
                                     </p>
                                 <?php else:?>
@@ -124,25 +124,26 @@ class Spark_Admin_Menu
                                                 <th class="uk-width-small">Id</th>
                                                 <th>Time</th>
                                                 <th>Message</th>
+                                                <th>Status Code</th>
                                                 <th>Status</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php foreach($build_data as $data):?>
-                                            <tr>
-                                                <td><?php echo $data->id; ?></td>
-                                                <td><?php echo $data->time; ?></td>
-                                                <td>
+                                            <tr class="build-data-row-<?php echo $data->id; ?> ">
+                                                <td class="build-id"><?php echo $data->id; ?></td>
+                                                <td class="build-time"><?php echo $data->time; ?></td>
+                                                <td class="build-message">
                                                     <span class="
                                                         <?php 
                                                             if($data->status == '200'): 
-                                                                echo 'uk-alert uk-alert-success';
+                                                                echo 'uk-text-success';
                                                             elseif($data->status == '201'):
-                                                                echo 'uk-alert uk-alert-warning';
+                                                                echo 'uk-text-warning';
                                                             elseif($data->status == '500'):
-                                                                echo 'uk-alert uk-alert-danger';
+                                                                echo 'uk-text-danger';
                                                             else:
-                                                                echo 'uk-alert uk-alert-primary';
+                                                                echo 'uk-text-primary';
                                                             endif;
 
                                                         ?>
@@ -150,13 +151,13 @@ class Spark_Admin_Menu
                                                         <?php echo ucwords($data->message); ?>
                                                     </span>
                                                 </td>
-                                                <td><?php echo ucwords($data->status); ?></td>
+                                                <td class="build-status"><?php echo ucwords($data->status); ?></td>
                                                 <?php if( $data->status == '200'):?>
-                                                    <td><button class="uk-button uk-button-default uk-alert-success" type="button">Success</button></td>
+                                                    <td class="check-status-button"><span class="uk-text-success">Success</span></td>
                                                 <?php elseif($data->status == '500'): ?>
-                                                    <td><button class="uk-button uk-button-default uk-alert-danger" type="button">Build Failed</button></td>
+                                                    <td class="check-status-button"><span class="uk-text-danger">Build Failed</span></td>
                                                 <?php else: ?>
-                                                    <td><span id="check-build-status" class="uk-button uk-button-default uk-alert-primary" type="button">Check Status</span></td>
+                                                    <td class="check-status-button"><span id="check-build-status" class="check-build-status uk-button uk-button-default uk-alert-primary" type="button">Check Status</span></td>
                                                 <?php endif;?>
                                             </tr>
                                             <?php endforeach;?>
