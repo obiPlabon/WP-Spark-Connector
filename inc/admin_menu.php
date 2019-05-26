@@ -28,13 +28,13 @@ class Spark_Admin_Menu
     {
         # code...
         // add_menu_page($page_title, $menu_title, $capability, $menu_slug, $function, $icon_url, $position)
-        add_menu_page('Spark', 'Spark', 'manage_options', 'spark', array($this, 'tg_connector_admin_menu'), 'dashicons-admin-plugins', 2);
+        add_menu_page('Spark', 'Spark', 'manage_options', 'spark', array($this, 'tg_connector_admin_menu'), plugin_dir_url(__DIR__). '/assets/images/wpspark-icon-25x.png', 2);
         
 
     }
     public function tg_connector_admin_menu(){
         ?>
-        <div class="tg-app-connector">
+        <div class="tg-app-connector uk-padding">
             <div class="wrap">
                 <div id="icon-options-general" class="icon32"></div>
 
@@ -66,7 +66,9 @@ class Spark_Admin_Menu
                                         
                                     </p>
                                 <?php else:?>
-                                    <button href="#" id="register-input" class="uk-button uk-button-danger uk-button-medium">Not connected</button>
+                                    <p>
+                                        Status <span class="uk-label uk-label-danger">Not connected</span>
+                                    </p>
                                 <?php endif;?>
                             </div>
                         </div>
@@ -168,17 +170,30 @@ class Spark_Admin_Menu
                             </div>
                         <?php else: ?>
                             <div class="uk-child-width-expand@s uk-grid" id="spark_annonymus" uk-grid>
-                                <div class="uk-padding">
+                                <div class="uk-padding uk-width-2-3">
                                     <p class="uk-text-large uk-text-bold">
                                         <?php esc_html_e('Sign-up for API key', 'spark');?>
                                     </p>
-                                    <p class="uk-text-secondary">Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi error pariatur neque labore sit temporibus alias nulla ipsam quo aperiam dolore, harum eum eveniet nisi inventore ad eos veritatis est.</p>
-                                </div>
-                                <div class="uk-padding uk-text-center">
                                     
-                                    <a href="http://app.wpspark.io/register" target="_blank" id="register-input" class="uk-button uk-button-danger uk-button-large uk-margin-small-bottom">Register For API keys</a>
-                                    <br/>
-                                    <a href="#" id="already-has-token" class="uk-button uk-button-primary uk-button-large">Already have API keys</a>
+                                    <p class="uk-h4">
+                                        In order to get access to build you will need an API key from <a href="http://wpspark.com" target="_blank">WpSpark</a>
+                                    </p>
+                                    
+                                    <ol class="">
+                                        <li>Login to our portal</li>
+                                        <li>Register your domain</li>
+                                        <li>Get an API Key</li>
+                                    </ul>
+                                    
+                                    
+                                </div>
+                                <div class="uk-padding uk-padding-remove-right uk-flex uk-flex-middle">
+                                    <div class="uk-width-1-1">
+                                        <a href="http://app.wpspark.io/register" target="_blank" id="register-input" class="uk-width-1-1 uk-button uk-button-danger uk-button-large uk-margin-small-bottom">Register For API keys</a>
+                                        <br/>
+                                        <a href="#" id="already-has-token" class="uk-width-1-1 uk-button uk-button-primary uk-button-large">Already have API keys</a>
+                                    </div>
+                                    
                                 </div>
                             </div>
 
@@ -189,7 +204,7 @@ class Spark_Admin_Menu
                                         <li><a class="show_resgistration_state" href="#">Register Account</a></li>
                                         <li><a href="#">Connect Account</a></li>
                                     </ul>
-                                    <form method="post" action="options.php">
+                                    <form method="post" action="options.php" class="connect-app-form">
                                         <?php
 
                                             /**
