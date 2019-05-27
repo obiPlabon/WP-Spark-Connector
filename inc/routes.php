@@ -32,6 +32,12 @@ class TGC_Routes{
             'methods' => 'POST',
             'callback' => array($this, 'spark_get_build_status')
         ));
+
+        register_rest_field( 'post',  'spark_media', array(
+                'get_callback'    => array($this, 'spark_get_featured_media'), // custom function name 
+                'update_callback' => null,
+                'schema'          => null,
+        ));
     }
 
     public function tgc_pull_site_meta_data(){
@@ -115,7 +121,21 @@ class TGC_Routes{
             ), 
             array( 'id' => $id ) 
         );
-	}
+    }
+    
+    public function spark_get_featured_media($object, $field_name, $request){
+        $featured_img_array = wp_get_attachment_image_src(
+            $object['featured_media'], // Image attachment ID
+            'full',  // Size.  Ex. "thumbnail", "large", "full", etc..
+            false // Whether the image should be treated as an icon.
+        );
+        // var_dump($featured_img_array);
+        if($featured_img_array){
+            return $featured_img_array[0];
+        }else{
+            return null;
+        }
+    }
 
 
 }
