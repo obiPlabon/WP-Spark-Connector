@@ -82,8 +82,6 @@ class Spark_Admin_Menu
                         if(! empty($token)): ?>
                             <div class="uk-child-width-expand@s uk-grid" id="spark_auth_state" uk-grid>
 
-                                
-
                                 <div class="uk-padding">
                                     <input 
                                     id="spark-app-token"

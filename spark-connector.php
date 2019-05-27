@@ -59,10 +59,19 @@ function spark_core_flush() {
 register_activation_hook( __FILE__, 'spark_core_flush' );
 register_deactivation_hook( __FILE__, 'spark_core_flush' );
 
+add_action('current_screen', 'spark_get_page_slug');
+
+function spark_get_page_slug(){
+	$current_screen = get_current_screen()->id;
+	if($current_screen == 'toplevel_page_spark'){
+		add_action('admin_enqueue_scripts', 'spark_load_script_to_admin');
+	}
+}
+
+
 /**
  * Load script to admin pages
  */
-add_action('admin_enqueue_scripts', 'spark_load_script_to_admin');
 function spark_load_script_to_admin(){
 	wp_enqueue_style('tgc-core', plugin_dir_url(__FILE__). 'assets/css/style.css');
 	wp_enqueue_style('spark-uikit', 'https://cdnjs.cloudflare.com/ajax/libs/uikit/3.1.5/css/uikit.min.css');
