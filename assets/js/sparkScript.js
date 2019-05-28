@@ -202,7 +202,46 @@ jQuery( document ).ready( function($) {
 	/**
 	 * show email field for registration
 	 */
-	
+	$('#register-input').on('click', function(e){
+		e.preventDefault();
+		if($(this).hasClass('register-new-user')) {
+			var email = $('#email-for-register .uk-input').val();
+			var agree = true;
+			var sanitizeEmail = /[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}/igm;
+			if(! email.length){
+				$('#email-for-register .alert-text').remove();
+				$('#email-for-register').prepend('<p class="alert-text uk-text-danger">Please write a email address</p>');
+			}else{
+				$('#email-for-register .alert-text').remove();
+				if( !sanitizeEmail.test(email)){
+					$('#email-for-register').prepend('<p class="alert-text uk-text-warning">Please enter a value email address</p>');
+				}else{
+					$('#email-for-register').prepend('<p class="alert-text uk-text-success">Check your mail</p>');
+					$.ajax({
+						url: 'https://app.wpspark.io/register', 
+						method:'post',
+						data:{
+							name:email,
+							email:email,
+							password: '1234',
+							agree: !agree ? '' : agree,
+						},
+						success:function(response, data, xhr, textStatus){
+							console.log(response, data);
+						}, 
+						error:function(error, xhr, error_text, statusText){
+							console.log(error.message);
+						}
+					})
+				}
+			}
+		}else{
+			$('#email-for-register').css('display', 'block');
+			$(this).addClass('register-new-user').text('Register');
+		}
+
+	});
+
 
 
 });

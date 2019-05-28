@@ -16,7 +16,6 @@ class Spark_Admin_Menu
 		$this->wpdb = $wpdb;
 
 		$this->table_name = $this->wpdb->prefix . 'spark_build';
-        // add_shortcode($this->name, array($this, 'valley_adventure'));
         add_action('admin_menu', array($this, 'spark_admin_menu_init'));
         add_action("admin_init", array($this, "spark_display_options"));
         add_action('admin_bar_menu', array($this, "spark_add_toolbar_items"), 80);
@@ -181,17 +180,17 @@ class Spark_Admin_Menu
                                         <li>Login to our portal</li>
                                         <li>Register your domain</li>
                                         <li>Get an API Key</li>
-                                    </ul>
-                                    
-                                    
+                                    </ol>
                                 </div>
                                 <div class="uk-padding uk-padding-remove-right uk-flex uk-flex-middle">
                                     <div class="uk-width-1-1">
+                                        <div class="uk-margin" id="email-for-register" style="display:none;">
+                                            <input class="uk-input uk-form-large" type="email" placeholder="Your email address to register"/>
+                                        </div>
                                         <a href="http://app.wpspark.io/register" target="_blank" id="register-input" class="uk-width-1-1 uk-button uk-button-danger uk-button-large uk-margin-small-bottom">Register For API keys</a>
                                         <br/>
                                         <a href="#" id="already-has-token" class="uk-width-1-1 uk-button uk-button-primary uk-button-large">Already have API keys</a>
                                     </div>
-                                    
                                 </div>
                             </div>
 
