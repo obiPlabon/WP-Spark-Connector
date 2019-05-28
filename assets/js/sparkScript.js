@@ -9,26 +9,27 @@ jQuery( document ).ready( function($) {
 		$('#spark_auth_state').css({'display':'none'});
 	});
 
+	/**
+	 * validate token for build
+	 */
 	$('.tg-app-connector #submit').on('click', function(e){
 		e.preventDefault();
 		var getToken = $('.tg-app-connector #spark_app_token').val();
-
 		if(! getToken.length){
 			alert('Please insert token first');
 		}else{
 			$.ajax({
-				url: 'http://app.wpspark.io/api/v1/build',
+				url: 'https://app.wpspark.io/api/v1/build',
 				method: 'post',
 				data:{
 					token: getToken,
 					siteUrl: adminUrl.mysiteurl 
 				},
 				success: function( response,  data, textStatus, xhr ) {
-	
+					console.log(data);
 					// $('.tg-app-connector #spark_app_token').val(response['token']);
 					// $('.tg-app-connector #tg_woo_key').val(response['woocommerce_key']);
 					// $('.tg-app-connector #tg_woo_secret').val(response['woocommerce_secret']);
-	
 					$('.tg-app-connector #spark_app_token').attr("readonly", true);
 					$('.tg-app-connector #submit').val('Connected');
 					$('.tg-app-connector #submit').attr("disabled", true);
@@ -37,7 +38,6 @@ jQuery( document ).ready( function($) {
 					if(response && data == 'success'){
 						updateDbWithToken(response, getToken);
 						console.log('connected');
-
 					}
 					
 				},
@@ -52,7 +52,9 @@ jQuery( document ).ready( function($) {
 
 	});
 
-
+	/**
+	 * send a request for new build
+	 */
 	$('.tg-app-connector #spark-build, #wp-admin-bar-tg-connector-build').on('click', function(e){
 		e.preventDefault();
 		$(this).attr("disabled", true);
@@ -62,7 +64,7 @@ jQuery( document ).ready( function($) {
 		$('#build-status .uk-alert-success').css('display', 'none');
 
 		$.ajax({
-            url: 'http://app.wpspark.io/api/v1/build',
+            url: 'https://app.wpspark.io/api/v1/build',
 			method: 'post',
 			data:{
 				token: getToken,
@@ -98,6 +100,7 @@ jQuery( document ).ready( function($) {
 
 	});
 	/**
+	 * if token is successfully authenticate
 	 * Send ajax request on success
 	 * @param {*} response 
 	 */
@@ -120,7 +123,7 @@ jQuery( document ).ready( function($) {
 	}
 
 	/**
-	 * 
+	 * increase build number for new build
 	 * @param {build status} $status 
 	 */
 	function updateBuildStatus($status){
@@ -133,6 +136,11 @@ jQuery( document ).ready( function($) {
 			},
 		})
 	}
+
+	/**
+	 * disconnect spark app 
+	 * from wordpress
+	 */
 	$('#disconnect_application').on('click', function(e){
 		e.preventDefault();
 		var disconnect = confirm('Are you sure to disconnect ?');
@@ -154,6 +162,10 @@ jQuery( document ).ready( function($) {
 		
 	});
 
+	/**
+	 * check build status 
+	 * from build table in the spark page
+	 */
 	$('.check-build-status').on('click', function(e){
 		var buildId = $(this).parents('tr').find('.build-id').text();
 		var rowClass = $(this).parents('tr').attr('class');
@@ -186,6 +198,11 @@ jQuery( document ).ready( function($) {
 			}
 		})
 	})
+
+	/**
+	 * show email field for registration
+	 */
+	
 
 
 });

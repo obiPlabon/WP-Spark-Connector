@@ -67,7 +67,7 @@ class Spark_Admin_Menu
                                     </p>
                                 <?php else:?>
                                     <p>
-                                        Status <span class="uk-label uk-label-danger">Not connected</span>
+                                        <span class="uk-label uk-label-danger uk-padding-small">Not connected</span>
                                     </p>
                                 <?php endif;?>
                             </div>
@@ -174,7 +174,7 @@ class Spark_Admin_Menu
                                     </p>
                                     
                                     <p class="uk-h4">
-                                        In order to get access to build you will need an API key from <a href="http://wpspark.com" target="_blank">WpSpark</a>
+                                        In order to get access to build you will need an API key from <a href="http://wpspark.io" target="_blank">WpSpark</a>
                                     </p>
                                     
                                     <ol class="">
