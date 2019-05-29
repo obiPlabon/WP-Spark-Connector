@@ -25,6 +25,10 @@ jQuery( document ).ready( function($) {
 					token: getToken,
 					siteUrl: adminUrl.mysiteurl 
 				},
+				beforeSend: function(){
+					$('.tg-app-connector #submit').val('Connecting');
+					// $('.'+ rowClass + '.check-status-button span').text('Checking Statuss');
+				},
 				success: function( response,  data, textStatus, xhr ) {
 					console.log(data);
 					// $('.tg-app-connector #spark_app_token').val(response['token']);
@@ -45,6 +49,7 @@ jQuery( document ).ready( function($) {
 					console.log('response', error);
 					console.log('my error', xhr, 'error text',error_text, 'status text', statusText);
 					alert('insert a valid token');
+					$('.tg-app-connector #submit').val('Connect App');
 				},
 				
 			});
@@ -177,7 +182,8 @@ jQuery( document ).ready( function($) {
 				buildId: buildId
 			},
 			beforeSend: function(){
-				$('.'+ rowClass + '.check-status-button span').text('Checking Statuss');
+				$('.'+ rowClass + '.check-status-button span').html('<img src='+ adminUrl.gifurl +' />');
+				// $('.'+ rowClass + '.check-status-button span').text('Checking Statuss');
 			},
 			success: function(response){
 				var data = JSON.parse(response);
@@ -216,7 +222,6 @@ jQuery( document ).ready( function($) {
 				if( !sanitizeEmail.test(email)){
 					$('#email-for-register').prepend('<p class="alert-text uk-text-warning">Please enter a value email address</p>');
 				}else{
-					$('#email-for-register').prepend('<p class="alert-text uk-text-success">Check your mail</p>');
 					$.ajax({
 						url: 'https://app.wpspark.io/register', 
 						method:'post',
@@ -226,6 +231,9 @@ jQuery( document ).ready( function($) {
 							password: '1234',
 							agree: !agree ? '' : agree,
 						},
+						beforeSend: function(){
+							$('#email-for-register a.register-new-user').html('<img src='+ adminUrl.gifurl +' />');
+						},
 						success:function(response, data, xhr, textStatus){
 							console.log(response, data);
 						}, 
@@ -233,6 +241,7 @@ jQuery( document ).ready( function($) {
 							console.log(error.message);
 						}
 					})
+					$('#email-for-register').prepend('<p class="alert-text uk-text-success">Check your mail</p>');
 				}
 			}
 		}else{

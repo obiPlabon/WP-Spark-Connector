@@ -83,6 +83,7 @@ function spark_load_script_to_admin(){
 	wp_localize_script( 'form_handle', 'adminUrl', array(
 		'ajaxurl' => admin_url( 'admin-ajax.php' ),
 		'mysiteurl' =>  site_url(),
+		'gifurl' => plugin_dir_url(__FILE__).'assets/images/ajax-loader.gif'
 	));
 }
 
