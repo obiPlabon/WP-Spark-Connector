@@ -56,7 +56,7 @@ class Spark_Admin_Menu
                                         type="submit" 
                                         name="spark-build" 
                                         id="spark-build" 
-                                        <?php echo ($last_build_data->status == 'null')  || ($last_build_data->status == '201') ? 'disabled=true' : '' ;  ?>
+                                        <?php echo ($last_build_data->status == '') || ($last_build_data->status == 'null')  || ($last_build_data->status == '201') ? 'disabled=true' : '' ;  ?>
                                         class="uk-button uk-button-primary uk-button-medium" 
                                         >Build</button>
                                         <!-- <button name="spark-build-count" id="spark-build-count" disabled="true" class="uk-button uk-button-primary uk-button-medium">
