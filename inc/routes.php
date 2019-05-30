@@ -29,7 +29,7 @@ class TGC_Routes{
         ));
 
         register_rest_route('spark', '/buildstatus', array(
-            'methods' => 'POST',
+            'methods' => 'get',
             'callback' => array($this, 'spark_get_build_status')
         ));
 
