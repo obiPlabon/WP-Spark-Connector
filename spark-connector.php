@@ -1,12 +1,13 @@
 <?php 
 /**
- * Plugin Name: Spark App Connector
+ * Plugin Name: Spark
  * Plugin URI: https://wpspark.io/
- * Author: WP Spark
- * Author URI: https://wpspark.io/
+ * Author: Themesgrove
+ * Author URI: https://themesgrove.com/
  * Description: A Connector Plugin for WP Spark Applications
  * Version:1.0
  * License: GPLv2 or Later
+ * Text Domain: spark
  *  */ 
 
 /**
@@ -73,14 +74,10 @@ function spark_get_page_slug(){
  * Load script to admin pages
  */
 function spark_load_script_to_admin(){
-	wp_enqueue_style('tgc-core', plugin_dir_url(__FILE__). 'assets/css/style.css');
-	wp_enqueue_style('spark-uikit', 'https://cdnjs.cloudflare.com/ajax/libs/uikit/3.1.5/css/uikit.min.css');
-
-	// wp_enqueue_script('spark-uikit-js', 'https://cdnjs.cloudflare.com/ajax/libs/uikit/3.1.5/js/uikit.min.js', array('jquery'), '1.0', true);
-	// wp_enqueue_script('spark-uikit-icon', 'https://cdnjs.cloudflare.com/ajax/libs/uikit/3.1.5/js/uikit-icons.min.js', array('jquery'), '1.0', true);
-	// wp_enqueue_script('new-script', plugin_dir_url(__FILE__). 'assets/js/sparkScript.js', array('jquery'), '1.0', false);
-	wp_enqueue_script('form_handle', plugin_dir_url(__FILE__). 'assets/js/sparkScript.js', array('jquery'), '1.0', false);
-	wp_localize_script( 'form_handle', 'adminUrl', array(
+	wp_enqueue_style('spark-core', plugin_dir_url(__FILE__). 'assets/css/style.css');
+	wp_enqueue_style('uikit', 'https://cdnjs.cloudflare.com/ajax/libs/uikit/3.1.5/css/uikit.min.css');
+	wp_enqueue_script('spark_script', plugin_dir_url(__FILE__). 'assets/js/sparkScript.js', array('jquery'), '1.0', false);
+	wp_localize_script( 'spark_script', 'adminUrl', array(
 		'ajaxurl' => admin_url( 'admin-ajax.php' ),
 		'mysiteurl' =>  site_url(),
 		'gifurl' => plugin_dir_url(__FILE__).'assets/images/ajax-loader.gif'

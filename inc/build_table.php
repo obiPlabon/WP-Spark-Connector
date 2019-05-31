@@ -1,13 +1,5 @@
 <?php
 class Spark_Build{
-
-    // private static $instance;
-    // public function init(){
-    //     if(null == self::$instance){
-    //         self::$instance = new self;
-    //     }
-    //     return $self::$instance;
-    // }
     
     public static function spark_create_build_table(){
         global $wpdb;

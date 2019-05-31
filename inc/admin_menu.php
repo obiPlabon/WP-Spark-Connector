@@ -51,7 +51,6 @@ class Spark_Admin_Menu
                                         $last_build_data = $this->get_last_build_row();
                                     ?>
                                     <p class="uk-form-horizontal">
-                                        <!-- <button href="#" id="register-input" class="uk-button uk-button-primary uk-button-medium">Connected</button> -->
                                         <button 
                                         type="submit" 
                                         name="spark-build" 
@@ -59,10 +58,6 @@ class Spark_Admin_Menu
                                         <?php echo ($last_build_data->status == '') || ($last_build_data->status == 'null')  || ($last_build_data->status == '201') ? 'disabled=true' : '' ;  ?>
                                         class="uk-button uk-button-primary uk-button-medium" 
                                         >Build</button>
-                                        <!-- <button name="spark-build-count" id="spark-build-count" disabled="true" class="uk-button uk-button-primary uk-button-medium">
-                                            <?php //echo get_option('spark_build_count') ? get_option('spark_build_count') : '0' ; ?>
-                                        </button> -->
-                                        
                                     </p>
                                 <?php else:?>
                                     <p>
@@ -88,16 +83,7 @@ class Spark_Admin_Menu
                                     type="text" readonly placeholder="form-success" 
                                     value="<?php echo get_option('spark_app_token'); ?>">
                                     <button href="#" id="disconnect_application" class="uk-button uk-button-danger uk-button-medium">Disconnecte</button>
-                                    <!-- <p class="uk-form-horizontal">
-                                        <input 
-                                        type="submit" 
-                                        name="spark-build" 
-                                        id="spark-build" 
-                                        <?php //echo ($last_build_data->status == 'null')  || ($last_build_data->status == '201') ? 'disabled=true' : '' ;  ?>
-                                        class="button button-primary" 
-                                        value="Build "  />
-                                        <input type="button" name="spark-build-count" id="spark-build-count" readonly class="button button-primary" value=<?php //echo get_option('spark_build_count') ? get_option('spark_build_count') : '0' ; ?>  />
-                                    </p> -->
+                                    
                                     <div class="build-status" id="build-status">
                                         <div class="uk-alert-primary uk-alert uk-margin-small-top" style="display:none">
                                             <a class="uk-alert-close" uk-close></a>
