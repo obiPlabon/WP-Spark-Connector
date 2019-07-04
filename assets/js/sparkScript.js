@@ -23,7 +23,8 @@ jQuery( document ).ready( function($) {
 				method: 'post',
 				data:{
 					token: getToken,
-					siteUrl: adminUrl.mysiteurl 
+					siteUrl: adminUrl.mysiteurl,
+					no_build: true
 				},
 				beforeSend: function(){
 					$('.tg-app-connector #submit').val('Connecting');
