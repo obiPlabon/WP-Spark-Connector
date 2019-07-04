@@ -1,5 +1,5 @@
 <?php
-class TGC_Routes{
+class Spark_Routes{
 
     private static $instance;
     private $wpdb;
@@ -22,6 +22,10 @@ class TGC_Routes{
 
     }
 
+    /**
+     * Register your routes here
+     * inside this functions
+     */
     public function tgc_routes(){
         register_rest_route('spark', '/sitedata', array(
             'methods' => 'get',
@@ -31,6 +35,14 @@ class TGC_Routes{
         register_rest_route('spark', '/buildstatus', array(
             'methods' => 'get',
             'callback' => array($this, 'spark_get_build_status')
+        ));
+        /**
+         * Verify WordPress Sites
+         * from wp spark app
+         */
+        register_rest_route('spark', '/verifywp', array(
+            'methods' => 'get',
+            'callback' => array($this, 'spark_verify_wp_site')
         ));
 
         register_rest_field( 'post',  'spark_media', array(
@@ -135,6 +147,30 @@ class TGC_Routes{
             return $featured_img_array[0];
         }else{
             return null;
+        }
+    }
+
+    /**
+     * Verify wordpress site 
+     * from wp spark app
+     * what will be happen inside here 
+     * ----
+     * user will press the verify button 
+     * inside wpwpark dashboard 
+     * then wpspark app will send a request to 
+     * wp site through this routes. 
+     * this function is responsible to veriry 
+     * this wordpress site with wpspark token
+     * which is sent through the request
+     */
+    public function spark_verify_wp_site($request){
+        if(! $request['token']){die("You are not allowed baby !!!");}
+        $requested_token = $_GET['token'];
+        $saved_token = get_option('spark_app_token');
+        if($saved_token === $requested_token){
+            return 'Verified';
+        }else{
+            return 'Token Mismatch';
         }
     }
 
