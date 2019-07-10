@@ -27,29 +27,25 @@ class Spark_Routes{
      * inside this functions
      */
     public function tgc_routes(){
+        /**
+         * return site favicon and logo
+         * while you head this endpoint
+         */
         register_rest_route('spark', '/sitedata', array(
             'methods' => 'get',
             'callback' => array($this, 'tgc_pull_site_meta_data')
         ));
-
+        /**
+         * get build status from wp spark app 
+         * and update the db according to wp
+         */
         register_rest_route('spark', '/buildstatus', array(
             'methods' => 'get',
             'callback' => array($this, 'spark_get_build_status')
         ));
-        /**
-         * Verify WordPress Sites
-         * from wp spark app
-         */
-        register_rest_route('spark', '/verifywp', array(
-            'methods' => 'get',
-            'callback' => array($this, 'spark_verify_wp_site')
-        ));
-
-        register_rest_field( 'post',  'spark_media', array(
-                'get_callback'    => array($this, 'spark_get_featured_media'), // custom function name 
-                'update_callback' => null,
-                'schema'          => null,
-        ));
+        
+        
+        
     }
 
     public function tgc_pull_site_meta_data(){
@@ -136,44 +132,10 @@ class Spark_Routes{
         );
     }
     
-    public function spark_get_featured_media($object, $field_name, $request){
-        $featured_img_array = wp_get_attachment_image_src(
-            $object['featured_media'], // Image attachment ID
-            'full',  // Size.  Ex. "thumbnail", "large", "full", etc..
-            false // Whether the image should be treated as an icon.
-        );
-        // var_dump($featured_img_array);
-        if($featured_img_array){
-            return $featured_img_array[0];
-        }else{
-            return null;
-        }
-    }
 
-    /**
-     * Verify wordpress site 
-     * from wp spark app
-     * what will be happen inside here 
-     * ----
-     * user will press the verify button 
-     * inside wpwpark dashboard 
-     * then wpspark app will send a request to 
-     * wp site through this routes. 
-     * this function is responsible to veriry 
-     * this wordpress site with wpspark token
-     * which is sent through the request
-     */
-    public function spark_verify_wp_site($request){
-        if(! $request['token']){die("You are not allowed baby !!!");}
-        $requested_token = $_GET['token'];
-        $saved_token = get_option('spark_app_token');
-        if($saved_token === $requested_token){
-            return 'Verified';
-        }else{
-            return 'Token Mismatch';
-        }
-    }
-
+/**
+ * below brace is the end of this class
+ */
 }
 
 ?>

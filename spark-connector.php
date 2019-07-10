@@ -28,16 +28,26 @@ define('SPARK_CORE_ROOT', untrailingslashit(plugin_dir_path(__FILE__)));
 // require SPARK_CORE_ROOT. '/libs/class-tgm-plugin-activation.php';
 
 /**
- * require files here
+ * require all files from routes directory
  */
-// require SPARK_CORE_ROOT. '/inc/plugin_activation.php';
-require SPARK_CORE_ROOT . '/inc/connector.php';
-require SPARK_CORE_ROOT . '/inc/admin_menu.php';
-require SPARK_CORE_ROOT . '/inc/routes.php';
+$routes = glob(SPARK_CORE_ROOT. '/routes/*.php');
+foreach($routes as $route){
+    require $route;
+}
+/**
+ * require all files from inc directory
+ */
+$files = glob(SPARK_CORE_ROOT. '/inc/*.php');
+foreach($files as $file){
+    require $file;
+}
 
 function spark_core_load(){
 	Spark_Admin_Menu::init();
-	Spark_Routes::init();
+    Spark_Media::init();
+    Spark_Routes::init();
+    Spark_Route_Shop::init();
+    Spark_Route_VerifyWP::init();
 }
 add_action('plugins_loaded', 'spark_core_load');
 
@@ -46,7 +56,7 @@ add_action('plugins_loaded', 'spark_core_load');
  */
 function spark_create_build_table()
 {
-    require_once SPARK_CORE_ROOT . '/inc/build_table.php';
+    require_once SPARK_CORE_ROOT . '/db/create_build_table.php';
     Spark_Build::spark_create_build_table();
 }
 register_activation_hook(__FILE__, 'spark_create_build_table');
@@ -62,8 +72,10 @@ function spark_core_flush()
 register_activation_hook(__FILE__, 'spark_core_flush');
 register_deactivation_hook(__FILE__, 'spark_core_flush');
 
+/**
+ * Load js only inside spark admin page
+ */
 add_action('current_screen', 'spark_get_page_slug');
-
 function spark_get_page_slug()
 {
     $current_screen = get_current_screen()->id;
@@ -73,7 +85,7 @@ function spark_get_page_slug()
 }
 
 /**
- * Load script to admin pages
+ * enqueue spark scripts
  */
 function spark_load_script_to_admin()
 {
