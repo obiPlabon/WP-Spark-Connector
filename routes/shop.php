@@ -37,24 +37,28 @@ class Spark_Route_Shop{
      */
     public function add_product_to_cart($product_id, $product_quantity="1",  $variation_id="", $variations=[]){
         
+
+        
         global $woocommerce;
         $product_cart_status = false;
         $product = wc_get_product( $product_id );
-        // $title = $product->get_title();
+        $title = $product->get_title();
+
+        var_dump('product status', $title);
+
+
 
         /**
          * check if product is in the cart
          */
-        foreach($woocommerce->cart->get_cart() as $key => $val ) {
-                $_product = $val['data'];
-                if($product_id == $_product->id ) {
-                        $product_cart_status = true;
-                }
-        }
+        $in_cart = WC()->cart->find_product_in_cart( $product_id );
+        
+
         /**
          * add product to cart 
          * if not is in the cart
          */
+        var_dump('product id', $product_id);
         if($product_id ){
             $add_to_cart = $woocommerce->cart->add_to_cart($product_id, $product_quantity, $variation_id, $variations);
             var_dump('is added');
@@ -108,6 +112,7 @@ class Spark_Route_Shop{
                 /**
                  * if $product_id is string like below
                  * 13_292827_1_color-Blue_size-Medium
+                 * 13_|29|28|27_1_color-Blue_size-Large
                  * that means it variation proudct
                  * it contains three data 
                  * that is 
@@ -123,6 +128,8 @@ class Spark_Route_Shop{
                     $split_the_string = explode("_", $product_id); 
                     $product_id = $split_the_string[0];
                     $variation_id = $split_the_string[1];
+                    $variation_id = explode("|", $variation_id)[1];
+                    // var_dump('variation id', explode("|", $variation_id)[1]);
                     $product_quantity = $split_the_string[2];
                     $variations_str = array_slice($split_the_string, 3); 
 
@@ -137,6 +144,7 @@ class Spark_Route_Shop{
                     array_push($product_add_status, $status);
                                 
                 }else{
+                    var_dump('product idx', $product_id);
                     $status = $this->add_product_to_cart($product_id);
                     array_push($product_add_status, $status);
                 }
