@@ -47,7 +47,7 @@ class Spark_Admin_Menu
                                 <?php if(get_option('spark_app_token')):?>
                                     
                                     <?php 
-                                        $build_data = $this->spark_get_build_data();
+                                        $build_data = $this->spark_get_build_data(get_option('spark_app_token'));
                                         $last_build_data = $this->get_last_build_row();
                                     ?>
                                     <p class="uk-form-horizontal">
@@ -103,11 +103,12 @@ class Spark_Admin_Menu
 
                                     
                                     <?php if($build_data): ?>
-                                    <table class="uk-table uk-table-middle uk-table-divider uk-table-striped ">
+                                    <table class="uk-table uk-table-small uk-table-middle uk-table-hover uk-table-divider uk-table-striped ">
                                         <thead>
                                             <tr>
-                                                <th class="uk-width-small">Id</th>
-                                                <th>Time</th>
+                                                <th>Id</th>
+                                                <th class="uk-width-small">Time</th>
+                                                <th class="uk-width-small">Token</th>
                                                 <th>Message</th>
                                                 <th>Status Code</th>
                                                 <th>Status</th>
@@ -118,6 +119,7 @@ class Spark_Admin_Menu
                                             <tr class="build-data-row-<?php echo $data->id; ?> ">
                                                 <td class="build-id"><?php echo $data->id; ?></td>
                                                 <td class="build-time"><?php echo $data->time; ?></td>
+                                                <td class="build-token"><?php echo $data->token; ?></td>
                                                 <td class="build-message">
                                                     <span class="
                                                         <?php 
@@ -330,8 +332,8 @@ class Spark_Admin_Menu
         }
     }
 
-    public function spark_get_build_data(){
-        return $this->wpdb->get_results( "SELECT * FROM {$this->table_name} ORDER BY id DESC");
+    public function spark_get_build_data($token){
+        return $this->wpdb->get_results( "SELECT * FROM {$this->table_name} WHERE token='$token' ORDER BY id DESC  ");
     }
     public function get_last_build_row(){
         return $this->wpdb->get_row( "SELECT * FROM {$this->table_name} ORDER BY id DESC LIMIT 1");

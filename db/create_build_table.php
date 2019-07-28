@@ -14,6 +14,7 @@ class Spark_Build{
             id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
             time DATETIME NOT NULL,
             message TEXT NOT NULL,
+            token TEXT NOT NULL,
             status TEXT NOT NULL
         ) $charset_collate;";
 

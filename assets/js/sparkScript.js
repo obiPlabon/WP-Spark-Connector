@@ -10,7 +10,61 @@ jQuery( document ).ready( function($) {
 	});
 
 	/**
+	 * Registration with email field
+	 * Email field checklist for registration
+	 * 1. check if field is empty
+	 * 2. check valid email
+	 * 3. then send email to https://app.wpspark.io/register end point
+	 * 4. if success alert user to check the mail
+	 */
+	$('#register-input').on('click', function(e){
+		e.preventDefault();
+		if($(this).hasClass('register-new-user')) {
+			var email = $('#email-for-register .uk-input').val();
+			// var agree = true;
+			var sanitizeEmail = /[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}/igm;
+			if(! email.length){
+				$('#email-for-register .alert-text').remove();
+				$('#email-for-register').prepend('<p class="alert-text uk-text-danger">Please write a email address</p>');
+			}else{
+				$('#email-for-register .alert-text').remove();
+				if( !sanitizeEmail.test(email)){
+					$('#email-for-register').prepend('<p class="alert-text uk-text-warning">Please enter a value email address</p>');
+				}else{
+					$.ajax({
+						// url: 'https://app.wpspark.io/register', 
+						url: 'https://app.wpspark.io/api/v1/register', 
+						method:'post',
+						data:{
+							name:email,
+							email:email,
+							domain:adminUrl.mysiteurl,
+							// password: '1234',
+							// agree: !agree ? '' : agree,
+						},
+						beforeSend: function(){
+							$('#email-for-register a.register-new-user').html('<img src='+ adminUrl.gifurl +' />');
+						},
+						success:function(response, data, xhr, textStatus){
+							console.log(response, data);
+						}, 
+						error:function(error, xhr, error_text, statusText){
+							console.log(error.message);
+						}
+					})
+					$('#email-for-register').prepend('<p class="alert-text uk-text-success">Check your mail</p>');
+				}
+			}
+		}else{
+			$('#email-for-register').css('display', 'block');
+			$(this).addClass('register-new-user').text('Register');
+		}
+
+	});
+
+	/**
 	 * validate token for build
+	 * for the first time after login to spark wp admin panel
 	 */
 	$('.tg-app-connector #submit').on('click', function(e){
 		e.preventDefault();
@@ -31,7 +85,6 @@ jQuery( document ).ready( function($) {
 					// $('.'+ rowClass + '.check-status-button span').text('Checking Statuss');
 				},
 				success: function( response,  data, textStatus, xhr ) {
-					console.log(data);
 					// $('.tg-app-connector #spark_app_token').val(response['token']);
 					// $('.tg-app-connector #tg_woo_key').val(response['woocommerce_key']);
 					// $('.tg-app-connector #tg_woo_secret').val(response['woocommerce_secret']);
@@ -42,13 +95,11 @@ jQuery( document ).ready( function($) {
 	
 					if(response && data == 'success'){
 						updateDbWithToken(response, getToken);
-						console.log('connected');
 					}
 					
 				},
 				error: function(error, xhr, error_text, statusText) {
-					console.log('response', error);
-					console.log('my error', xhr, 'error text',error_text, 'status text', statusText);
+					console.log(xhr, 'error text - ',error_text, 'status text - ', statusText);
 					alert('insert a valid token');
 					$('.tg-app-connector #submit').val('Connect App');
 				},
@@ -57,58 +108,10 @@ jQuery( document ).ready( function($) {
 		}
 
 	});
-
-	/**
-	 * send a request for new build
-	 */
-	$('.tg-app-connector #spark-build, #wp-admin-bar-tg-connector-build').on('click', function(e){
-		e.preventDefault();
-		$(this).attr("disabled", true);
-		var getToken = $('.tg-app-connector #spark-app-token').val();
-		var buildCount = +$('.tg-app-connector #spark-build-count').val();
-		$('#build-status .uk-alert-primary').css('display', 'block');
-		$('#build-status .uk-alert-success').css('display', 'none');
-
-		$.ajax({
-            url: 'https://app.wpspark.io/api/v1/build',
-			method: 'post',
-			data:{
-				token: getToken,
-				siteUrl: adminUrl.mysiteurl 
-			},
-            success: function( response,  data, textStatus, xhr ) {
-				updateBuildStatus('1');
-				setTimeout(function(){
-					if(response && data == 'success'){
-						buildCount += 1;
-						$('.tg-app-connector #spark-build-count').val(buildCount);
-						// updateBuildStatus('1');
-						// updateDbWithToken(response, getToken);
-						console.log('connected');
-						$('#build-status .uk-alert-primary').css('display', 'none');
-						$('#build-status .uk-alert-success').css('display', 'block');
-						$('.tg-app-connector #spark-build').attr("disabled", false);
-					}
-				}, 50000)
-				
-            },
-            error: function(error, xhr, error_text, statusText) {
-				console.log('my error', xhr, 'error text',error_text, 'status text', statusText);
-				setTimeout(function(){
-					$('#build-status .uk-alert-primary').css('display', 'none');
-					$('#build-status .uk-alert-danger').css('display', 'block');
-					$('.tg-app-connector #spark-build').attr("disabled", false);
-				}, 50000);
-				
-			},
-			
-        });
-
-	});
 	/**
 	 * if token is successfully authenticate
-	 * Send ajax request on success
-	 * @param {*} response 
+	 * send token to admin ajax 
+	 * to save token in option table
 	 */
 	function updateDbWithToken(response, token){
 		$.ajax({
@@ -129,16 +132,66 @@ jQuery( document ).ready( function($) {
 	}
 
 	/**
-	 * increase build number for new build
-	 * @param {build status} $status 
+	 * send a request for new build to wpspark app
+	 * both from build button in app or admin bar
 	 */
-	function updateBuildStatus($status){
+	$('.tg-app-connector #spark-build, #wp-admin-bar-tg-connector-build').on('click', function(e){
+		e.preventDefault();
+		$(this).attr("disabled", true);
+		var getToken = $('.tg-app-connector #spark-app-token').val();
+		// var buildCount = +$('.tg-app-connector #spark-build-count').val();
+		$('#build-status .uk-alert-primary').css('display', 'block');
+		$('#build-status .uk-alert-success').css('display', 'none');
+
+		$.ajax({
+            url: 'https://app.wpspark.io/api/v1/build',
+			method: 'post',
+			data:{
+				token: getToken,
+				siteUrl: adminUrl.mysiteurl
+				// no_build: false
+			},
+            success: function( response,  data, textStatus, xhr ) {
+				updateBuildStatus('1', getToken);
+				setTimeout(function(){
+					if(response && data == 'success'){
+						// buildCount += 1;
+						// $('.tg-app-connector #spark-build-count').val(buildCount);
+						// updateBuildStatus('1');
+						// console.log('connected');
+						$('#build-status .uk-alert-primary').css('display', 'none');
+						$('#build-status .uk-alert-success').css('display', 'block');
+						$('.tg-app-connector #spark-build').attr("disabled", false);
+					}
+				}, 50000)
+            },
+            error: function(error, xhr, error_text, statusText) {
+				console.log(xhr, 'error text - ',error_text, 'status text - ', statusText);
+				// updateBuildStatus('1', getToken);
+				setTimeout(function(){
+					$('#build-status .uk-alert-primary').css('display', 'none');
+					$('#build-status .uk-alert-danger').css('display', 'block');
+					$('.tg-app-connector #spark-build').attr("disabled", false);
+				}, 50000);
+				
+			},
+			
+        });
+
+	});
+	
+	/**
+	 * update wp_spark_build table
+	 * with token
+	 */
+	function updateBuildStatus($status, $token){
 		$.ajax({
             url: adminUrl.ajaxurl,
 			method: 'post',
 			data:{
 				action: 'update_build_status',
 				data: $status,
+				token: $token
 			},
 		})
 	}
@@ -171,6 +224,9 @@ jQuery( document ).ready( function($) {
 	/**
 	 * check build status 
 	 * from build table in the spark page
+	 * this will query from wordpress wp_spark_build table 
+	 * to check the update status
+	 * and then update the row 
 	 */
 	$('.check-build-status').on('click', function(e){
 		var buildId = $(this).parents('tr').find('.build-id').text();
@@ -198,60 +254,11 @@ jQuery( document ).ready( function($) {
 				}else{
 					$('.'+ rowClass + '.check-status-button span').text('Check Status');
 				}
-
 			},
 			error: function(error){
 				console.log(error.message);
 			}
 		})
 	})
-
-	/**
-	 * show email field for registration
-	 */
-	$('#register-input').on('click', function(e){
-		e.preventDefault();
-		if($(this).hasClass('register-new-user')) {
-			var email = $('#email-for-register .uk-input').val();
-			var agree = true;
-			var sanitizeEmail = /[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}/igm;
-			if(! email.length){
-				$('#email-for-register .alert-text').remove();
-				$('#email-for-register').prepend('<p class="alert-text uk-text-danger">Please write a email address</p>');
-			}else{
-				$('#email-for-register .alert-text').remove();
-				if( !sanitizeEmail.test(email)){
-					$('#email-for-register').prepend('<p class="alert-text uk-text-warning">Please enter a value email address</p>');
-				}else{
-					$.ajax({
-						url: 'https://app.wpspark.io/register', 
-						method:'post',
-						data:{
-							name:email,
-							email:email,
-							password: '1234',
-							agree: !agree ? '' : agree,
-						},
-						beforeSend: function(){
-							$('#email-for-register a.register-new-user').html('<img src='+ adminUrl.gifurl +' />');
-						},
-						success:function(response, data, xhr, textStatus){
-							console.log(response, data);
-						}, 
-						error:function(error, xhr, error_text, statusText){
-							console.log(error.message);
-						}
-					})
-					$('#email-for-register').prepend('<p class="alert-text uk-text-success">Check your mail</p>');
-				}
-			}
-		}else{
-			$('#email-for-register').css('display', 'block');
-			$(this).addClass('register-new-user').text('Register');
-		}
-
-	});
-
-
 
 });

@@ -35,16 +35,6 @@ class Spark_Routes{
             'methods' => 'get',
             'callback' => array($this, 'tgc_pull_site_meta_data')
         ));
-        /**
-         * get build status from wp spark app 
-         * and update the db according to wp
-         */
-        register_rest_route('spark', '/buildstatus', array(
-            'methods' => 'get',
-            'callback' => array($this, 'spark_get_build_status')
-        ));
-        
-        
         
     }
 
@@ -79,58 +69,7 @@ class Spark_Routes{
         return $html;    
     }
 
-    public function spark_get_build_status($request){
-        $request_message = $_GET['message'];
-        $request_status = $_GET['status'];
-
-        /**
-         * build message status
-         * building - 201
-         * published - 200
-         * failed - 500
-         * =================
-         * At first check if there is any data saved 
-         * Against build status 
-         * if not then create a new record against that data
-         * if exist then update that record 
-         * add_option($option, $value, $deprecated, $autoload)
-         * get_option($option, $default)
-         * delete_option($option)
-         * update_option($option, $value, $autoload)
-         */
-        $build_message_in_db = get_option('spark_build_message');
-        $build_status_in_db = get_option('spark_build_status');
-        $null_row = $this->wpdb->get_row( "SELECT * FROM {$this->table_name} ORDER BY id DESC LIMIT 1" );
-        
-        if($build_message_in_db && $build_status_in_db){
-            if($null_row){
-                $null_id = $null_row->id;
-                $this->spark_build_data_update($null_id, $request_message, $request_status);
-            }
-            $update_build_message = update_option('spark_build_message', $request_message, 'yes');
-            $update_build_status = update_option('spark_build_status', $request_status, 'yes');
-            return 'update build message to db - '. $update_build_message .' - update build status to db - '. $update_build_status;
-        }else{
-            if($null_row){
-                $null_id = $null_row->id;
-                $this->spark_build_data_update($null_id, $request_message, $request_status);
-            }
-            $add_build_message = add_option('spark_build_message', $request_message, '', 'yes');
-            $add_build_status = add_option('spark_build_status', $request_status, '', 'yes');
-            return 'add build message to db - '.$add_build_message .' - add build status to db - '. $add_build_status;
-        }
-        
-    }
-
-    public function spark_build_data_update( $id, $message, $status ) {
-        $this->wpdb->update( $this->table_name, 
-            array(
-                'message' => $message,
-                'status' => $status
-            ), 
-            array( 'id' => $id ) 
-        );
-    }
+    
     
 
 /**

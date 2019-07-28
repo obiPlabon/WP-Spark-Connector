@@ -1,40 +1,49 @@
 <?php
+/**
+ * save token to the wp_options table
+ */
 add_action('wp_ajax_spark_get_connector_app_response', 'spark_get_connector_app_response');
 add_action('wp_ajax_nopriv_spark_get_connector_app_response', 'spark_get_connector_app_response');
-
 function spark_get_connector_app_response(){
 	$data = $_POST['data'];
 	$token = $_POST['token'];
 	$token_status = add_option( 'spark_app_token', $token, '', 'yes');
 	// $key_status = add_option( 'tg_woo_key', $data['woocommerce_key'], '', 'yes');
 	// $secret_status = add_option( 'tg_woo_secret', $data['woocommerce_secret'], '', 'yes' );
-	var_dump($data, $token);	
+	// var_dump($data, $token);	
     die();
 }
 
+
+/**
+ * receive the build request success data
+ * update wp_spark_build table 
+ * with token
+ */
 add_action('wp_ajax_update_build_status', 'update_build_status');
 add_action('wp_ajax_nopriv_update_build_status', 'update_build_status');
 function update_build_status(){
 	$data = $_POST['data'];
+	$token = $_POST['token'];
 	$data = (int) $data;
-	$build_count = add_option( 'spark_build_count', $data, '', 'yes');
+	// $build_count = add_option( 'spark_build_count', $data, '', 'yes');
 
 	$db_time = current_time( 'mysql' );
 	$message = 'Start building';
 	$status = 'null';
-	$insert_status = spark_insert_into_build_table($db_time, $message, $status);
+	$insert_status = spark_insert_into_build_table($db_time, $message, $status, $token);
 
-	if(get_option('spark_build_count')){
-		$today_build_number = get_option('spark_build_count');
-		$today_build_number += $data;
-		$update_status = update_option('spark_build_count', $today_build_number, 'yes');
-		var_dump('update status', $update_status);
-	}
-	var_dump($build_count, $insert_status);
+	// if(get_option('spark_build_count')){
+	// 	$today_build_number = get_option('spark_build_count');
+	// 	$today_build_number += $data;
+	// 	$update_status = update_option('spark_build_count', $today_build_number, 'yes');
+	// 	var_dump('update status', $update_status);
+	// }
+	// var_dump($build_count, $insert_status);
+
 	die();
 }
-
-function spark_insert_into_build_table($time, $message, $status){
+function spark_insert_into_build_table($time, $message, $status, $token){
 	global $wpdb;
 	$table_name = $wpdb->prefix . 'spark_build';
 	
@@ -43,6 +52,7 @@ function spark_insert_into_build_table($time, $message, $status){
 		array( 
 			'time' => $time, 
 			'message' => $message, 
+			'token' => $token, 
 			'status' => $status, 
 		) 
 	);
@@ -50,7 +60,10 @@ function spark_insert_into_build_table($time, $message, $status){
 
 }
 
-
+/**
+ * disconnect user from spark app 
+ * delete the token from wp_options table
+ */
 add_action('wp_ajax_spark_remove_token', 'spark_remove_token');
 add_action('wp_ajax_nopriv_spark_remove_token', 'spark_remove_token');
 function spark_remove_token(){
@@ -68,6 +81,11 @@ function spark_remove_token(){
 	die();
 }
 
+/**
+ * check the build status
+ * this will query from wp_spark_build table 
+ * and update the frontend table
+ */
 add_action('wp_ajax_spark_check_build_status', 'spark_check_build_status');
 add_action('wp_ajax_nopriv_spark_check_build_status', 'spark_check_build_status');
 function spark_check_build_status(){
@@ -82,8 +100,6 @@ function spark_check_build_status(){
 	catch(Exception $e){
 		echo 'Message: '.$e->getMessage();
 	}
-	
-	
 	die();
 }
 
