@@ -59,7 +59,7 @@ class Spark_Admin_Menu
                                                 type="submit" 
                                                 name="spark-build" 
                                                 id="spark-build" 
-                                                <?php echo ($last_build_data->status == '') || ($last_build_data->status == 'null')  || ($last_build_data->status == '201') ? 'disabled=true' : '' ;  ?>
+                                                <?php echo ($last_build_data->status == 'null')  || ($last_build_data->message == 'building') ? 'disabled=true' : '' ;  ?>
                                                 class="uk-button uk-button-primary uk-button-medium" 
                                                 >Build</button>
                                             <?php else:?>
@@ -150,7 +150,7 @@ class Spark_Admin_Menu
                                                             if($data->message == 'published'): 
                                                                 echo 'uk-text-success';
                                                             elseif($data->message == 'building'):
-                                                                echo 'uk-text-warning';
+                                                                echo 'uk-text-primary';
                                                             elseif($data->status == '500'):
                                                                 echo 'uk-text-danger';
                                                             else:
@@ -165,8 +165,6 @@ class Spark_Admin_Menu
                                                 <td class="build-status"><?php echo ucwords($data->status); ?></td>
                                                 <?php if($data->message == 'published'): ?>
                                                     <td class="check-status-button uk-text-truncate"><span class="uk-text-success">Done</span></td>
-                                                <?php elseif( $data->message == 'building'):?>
-                                                    <td class="check-status-button uk-text-truncate"><span class="uk-text-primary">Building</span></td>
                                                 <?php elseif($data->status == '500'): ?>
                                                     <td class="check-status-button uk-text-truncate"><span class="uk-text-danger">Build Failed</span></td>
                                                 <?php else: ?>
