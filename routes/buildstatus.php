@@ -57,7 +57,7 @@ class Spark_Route_Buildstatus{
         $null_row = $this->wpdb->get_row( "SELECT * FROM {$this->table_name} WHERE token='$this->token' ORDER BY id DESC LIMIT 1" );
         
         if($null_row){
-            if( ($null_row->status === 'null') || ($null_row->status === '201') ) {
+            if( ($null_row->status === 'null') || ($null_row->message == 'building') ) {
                 $row_id = $null_row->id;
                 $this->spark_build_data_update($row_id, $request_message, $this->token, $request_status);
                 return 'database updated';

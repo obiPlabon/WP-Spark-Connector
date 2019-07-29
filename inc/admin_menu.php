@@ -111,6 +111,8 @@ class Spark_Admin_Menu
                                             <a class="uk-alert-close" uk-close></a>
                                             <p>Please setup your FTP/S3 configurations.</p>
                                         </div>
+                                        
+                                        <div class="uk-alert-primary uk-alert uk-margin-small-top build-details" style="display:none"></div>
 
                                         <div class="uk-alert-success uk-alert uk-margin-small-top" style="display:none">
                                             <a class="uk-alert-close" uk-close></a>
@@ -147,7 +149,7 @@ class Spark_Admin_Menu
                                                         <?php 
                                                             if($data->status == '200'): 
                                                                 echo 'uk-text-success';
-                                                            elseif($data->status == '201'):
+                                                            elseif($data->message == 'building'):
                                                                 echo 'uk-text-warning';
                                                             elseif($data->status == '500'):
                                                                 echo 'uk-text-danger';

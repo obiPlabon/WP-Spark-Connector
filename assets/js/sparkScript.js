@@ -156,21 +156,23 @@ jQuery( document ).ready( function($) {
 			},
             success: function( response,  data, textStatus, xhr ) {
 				updateBuildStatus('1', getToken);
-				setTimeout(function(){
-					if(response && data == 'success'){
-						// buildCount += 1;
-						// $('.tg-app-connector #spark-build-count').val(buildCount);
-						// updateBuildStatus('1');
-						// console.log('connected');
-						$('#build-status .uk-alert-primary').css('display', 'none');
-						$('#build-status .uk-alert-success').css('display', 'block');
-						$('.tg-app-connector #spark-build').attr("disabled", false);
-					}
-				}, 50000)
+				if(response && data == 'success'){
+					$('#build-status .build-details').css('display', 'block').append('<p>'+ response.message  +'</p>');
+				}
+				// setTimeout(function(){
+				// 	if(response && data == 'success'){
+				// 		// buildCount += 1;
+				// 		// $('.tg-app-connector #spark-build-count').val(buildCount);
+				// 		// updateBuildStatus('1');
+				// 		// console.log('connected');
+				// 		$('#build-status .uk-alert-primary').css('display', 'none');
+				// 		$('#build-status .uk-alert-success').css('display', 'block');
+				// 		$('.tg-app-connector #spark-build').attr("disabled", false);
+				// 	}
+				// }, 50000)
             },
             error: function(error, xhr, error_text, statusText) {
 				console.log(xhr, 'error text - ',error_text, 'status text - ', statusText);
-				// updateBuildStatus('1', getToken);
 				if(error.status === 422){
 					var errorMessage = JSON.parse(error.responseText).message;
 					var errorSolveUrl = JSON.parse(error.responseText).url;
@@ -178,13 +180,10 @@ jQuery( document ).ready( function($) {
 					$('#build-status .uk-alert-warning.ftp-details').css('display', 'block');
 					$('#build-status .uk-alert-warning.ftp-details').append('<a target="_blank" class="uk-button uk-button-primary" href='+errorSolveUrl+'>Add your Ftp</a>');
 				}else{
-					setTimeout(function(){
-						$('#build-status .uk-alert-primary').css('display', 'none');
-						$('#build-status .uk-alert-danger').css('display', 'block');
-						$('.tg-app-connector #spark-build').attr("disabled", false);
-					}, 50000);
+					$('#build-status .uk-alert-primary').css('display', 'none');
+					$('#build-status .uk-alert-danger').css('display', 'block');
+					$('.tg-app-connector #spark-build').attr("disabled", false);
 				}
-				
 				
 			},
 			
