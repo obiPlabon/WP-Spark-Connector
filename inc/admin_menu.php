@@ -161,7 +161,7 @@ class Spark_Admin_Menu
                                     </p>
                                     
                                     <p class="uk-h4">
-                                        In order to get access to build you will need an API key from <a href="http://wpspark.io" target="_blank">WpSpark</a>
+                                        In order to get access to build you will need an API key from <a href="https://app.wpspark.io/" target="_blank">WpSpark</a>
                                     </p>
                                     
                                     <ol class="">

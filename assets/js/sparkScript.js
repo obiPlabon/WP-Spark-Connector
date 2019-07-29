@@ -21,7 +21,6 @@ jQuery( document ).ready( function($) {
 		e.preventDefault();
 		if($(this).hasClass('register-new-user')) {
 			var email = $('#email-for-register .uk-input').val();
-			// var agree = true;
 			var sanitizeEmail = /[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}/igm;
 			if(! email.length){
 				$('#email-for-register .alert-text').remove();
@@ -32,27 +31,27 @@ jQuery( document ).ready( function($) {
 					$('#email-for-register').prepend('<p class="alert-text uk-text-warning">Please enter a value email address</p>');
 				}else{
 					$.ajax({
-						// url: 'https://app.wpspark.io/register', 
 						url: 'https://app.wpspark.io/api/v1/register', 
 						method:'post',
 						data:{
 							name:email,
 							email:email,
 							domain:adminUrl.mysiteurl,
-							// password: '1234',
-							// agree: !agree ? '' : agree,
 						},
 						beforeSend: function(){
-							$('#email-for-register a.register-new-user').html('<img src='+ adminUrl.gifurl +' />');
+							$('a.register-new-user').html('<img src='+ adminUrl.gifurl +' />');
 						},
 						success:function(response, data, xhr, textStatus){
 							console.log(response, data);
+							$('a.register-new-user').text('Success');
+							$('#email-for-register').prepend('<p class="alert-text uk-text-success">Check your mail</p>');
 						}, 
 						error:function(error, xhr, error_text, statusText){
-							console.log(error.message);
+							console.log(xhr, ' error text - ', error_text, ' status text - ', statusText, ' message -', error.message);
+							$('a.register-new-user').text('Register');
+							$('#email-for-register').prepend('<p class="alert-text uk-text-danger">Something Went Wrong</p>');
 						}
 					})
-					$('#email-for-register').prepend('<p class="alert-text uk-text-success">Check your mail</p>');
 				}
 			}
 		}else{
