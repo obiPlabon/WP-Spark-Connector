@@ -258,7 +258,7 @@ jQuery( document ).ready( function($) {
 				$('.'+ rowClass + '.build-message > span').text(data.message);
 				$('.'+ rowClass + '.build-status').text(data.status);
 				
-				if(data.status == '200'){
+				if(data.message == 'published'){
 					$('.'+ rowClass + '.check-status-button > span').removeClass('uk-alert-primary').addClass('uk-alert-success').text('Success');
 				}else if(data.status == '500'){
 					$('.'+ rowClass + '.check-status-button > span').removeClass('uk-alert-primary').addClass('uk-alert-danger').text('Build Failed');
