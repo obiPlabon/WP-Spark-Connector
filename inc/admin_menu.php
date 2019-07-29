@@ -180,28 +180,32 @@ class Spark_Admin_Menu
                         <?php else: ?>
                             <div class="uk-child-width-expand@s uk-grid" id="spark_annonymus" uk-grid>
                                 <div class="uk-padding uk-width-2-3">
+                                    
                                     <p class="uk-text-large uk-text-bold">
-                                        <?php esc_html_e('Sign-up for API key', 'spark');?>
+                                        To build your site
                                     </p>
                                     
-                                    <p class="uk-h4">
-                                        In order to get access to build you will need an API key from <a href="https://app.wpspark.io/" target="_blank">WpSpark</a>
-                                    </p>
-                                    
-                                    <ol class="">
-                                        <li>Login to our portal</li>
-                                        <li>Register your domain</li>
-                                        <li>Get an API Key</li>
-                                    </ol>
+                                    <ul class="uk-list uk-list-bullet">
+                                        <li><a href="http://app.wpspark.io/login">Login</a> to our portal</li>
+                                        <li>Add your domain</li>
+                                        <li>Built your site</li>
+                                    </ul>
                                 </div>
                                 <div class="uk-padding uk-padding-remove-right uk-flex uk-flex-middle">
                                     <div class="uk-width-1-1">
                                         <div class="uk-margin" id="email-for-register" style="display:none;">
                                             <input class="uk-input uk-form-large" type="email" placeholder="Your email address to register"/>
                                         </div>
+                                        <?php if($this->wordpress_ip !== '127.0.0.1'):?>
                                         <a href="http://app.wpspark.io/register" target="_blank" id="register-input" class="uk-width-1-1 uk-button uk-button-danger uk-button-large uk-margin-small-bottom">Register For API keys</a>
                                         <br/>
                                         <a href="#" id="already-has-token" class="uk-width-1-1 uk-button uk-button-primary uk-button-large">Already have API keys</a>
+                                        <?php else:?>
+                                            <a href="http://app.wpspark.io/register" target="_blank" class="uk-width-1-1 uk-button uk-button-default uk-label-danger uk-button-large uk-margin-small-bottom">
+                                                Register to Build
+                                            </a>
+                                        <?php endif;?>
+                                        
                                     </div>
                                 </div>
                             </div>
