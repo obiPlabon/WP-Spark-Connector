@@ -53,13 +53,25 @@ class Spark_Admin_Menu
                                     ?>
                                     <p class="uk-form-horizontal">
                                         <?php if($this->wordpress_ip !== '127.0.0.1'):?>
-                                            <button 
-                                            type="submit" 
-                                            name="spark-build" 
-                                            id="spark-build" 
-                                            <?php echo ($last_build_data->status == '') || ($last_build_data->status == 'null')  || ($last_build_data->status == '201') ? 'disabled=true' : '' ;  ?>
-                                            class="uk-button uk-button-primary uk-button-medium" 
-                                            >Build</button>
+
+                                            <?php if( $last_build_data):?>
+                                                <button 
+                                                type="submit" 
+                                                name="spark-build" 
+                                                id="spark-build" 
+                                                <?php echo ($last_build_data->status == '') || ($last_build_data->status == 'null')  || ($last_build_data->status == '201') ? 'disabled=true' : '' ;  ?>
+                                                class="uk-button uk-button-primary uk-button-medium" 
+                                                >Build</button>
+                                            <?php else:?>
+                                                <button 
+                                                type="submit" 
+                                                name="spark-build" 
+                                                id="spark-build" 
+                                                class="uk-button uk-button-primary uk-button-medium">
+                                                    Build
+                                                </button>
+                                            <?php endif; ?>
+
                                         <?php else: ?>
                                             <p class="uk-alert-warning uk-alert">You can not build from local</p>
                                         <?php endif;?>
