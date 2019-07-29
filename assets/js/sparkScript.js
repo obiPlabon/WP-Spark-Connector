@@ -46,10 +46,14 @@ jQuery( document ).ready( function($) {
 							$('a.register-new-user').text('Success');
 							$('#email-for-register').prepend('<p class="alert-text uk-text-success">Check your mail</p>');
 						}, 
-						error:function(error, xhr, error_text, statusText){
-							console.log(xhr, ' error text - ', error_text, ' status text - ', statusText, ' message -', error.message);
+						error:function(error, jqXHR, xhr, error_text, textStatus, response){
+							console.log(error.status, response, jqXHR, xhr, ' error text - ', error_text, ' Status - ', textStatus, ' message -', error.message);
 							$('a.register-new-user').text('Register');
-							$('#email-for-register').prepend('<p class="alert-text uk-text-danger">Something Went Wrong</p>');
+							if(error.status === 422){
+								$('#email-for-register').prepend('<p class="alert-text uk-text-danger">Email Already Exist <a target="blank" href="https://app.wpspark.io/login">Login for token</a></p>');
+							}else{
+								$('#email-for-register').prepend('<p class="alert-text uk-text-danger">Something Went Wrong</p>');
+							}
 						}
 					})
 				}
@@ -64,6 +68,7 @@ jQuery( document ).ready( function($) {
 	/**
 	 * validate token for build
 	 * for the first time after login to spark wp admin panel
+	 * no_build: false dile token check korbe. ar no_build er value na dile ftp
 	 */
 	$('.tg-app-connector #submit').on('click', function(e){
 		e.preventDefault();
@@ -76,7 +81,7 @@ jQuery( document ).ready( function($) {
 				method: 'post',
 				data:{
 					token: getToken,
-					siteUrl: adminUrl.mysiteurl,
+					domain: adminUrl.mysiteurl,
 					no_build: true
 				},
 				beforeSend: function(){
@@ -139,7 +144,7 @@ jQuery( document ).ready( function($) {
 		$(this).attr("disabled", true);
 		var getToken = $('.tg-app-connector #spark-app-token').val();
 		// var buildCount = +$('.tg-app-connector #spark-build-count').val();
-		$('#build-status .uk-alert-primary').css('display', 'block');
+		// $('#build-status .uk-alert-primary').css('display', 'block');
 		$('#build-status .uk-alert-success').css('display', 'none');
 
 		$.ajax({
@@ -147,8 +152,7 @@ jQuery( document ).ready( function($) {
 			method: 'post',
 			data:{
 				token: getToken,
-				siteUrl: adminUrl.mysiteurl
-				// no_build: false
+				domain: adminUrl.mysiteurl
 			},
             success: function( response,  data, textStatus, xhr ) {
 				updateBuildStatus('1', getToken);
@@ -167,11 +171,20 @@ jQuery( document ).ready( function($) {
             error: function(error, xhr, error_text, statusText) {
 				console.log(xhr, 'error text - ',error_text, 'status text - ', statusText);
 				// updateBuildStatus('1', getToken);
-				setTimeout(function(){
-					$('#build-status .uk-alert-primary').css('display', 'none');
-					$('#build-status .uk-alert-danger').css('display', 'block');
-					$('.tg-app-connector #spark-build').attr("disabled", false);
-				}, 50000);
+				if(error.status === 422){
+					var errorMessage = JSON.parse(error.responseText).message;
+					var errorSolveUrl = JSON.parse(error.responseText).url;
+					console.log(error.responseText, errorMessage, errorSolveUrl);
+					$('#build-status .uk-alert-warning.ftp-details').css('display', 'block');
+					$('#build-status .uk-alert-warning.ftp-details').append('<a target="_blank" class="uk-button uk-button-primary" href='+errorSolveUrl+'>Add your Ftp</a>');
+				}else{
+					setTimeout(function(){
+						$('#build-status .uk-alert-primary').css('display', 'none');
+						$('#build-status .uk-alert-danger').css('display', 'block');
+						$('.tg-app-connector #spark-build').attr("disabled", false);
+					}, 50000);
+				}
+				
 				
 			},
 			

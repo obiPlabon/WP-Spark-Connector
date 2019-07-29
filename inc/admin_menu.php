@@ -4,6 +4,7 @@ class Spark_Admin_Menu
     private static $instance;
     private $wpdb;
     private $table_name;
+    private $wordpress_ip;
     public static function init(){
         if(null == self::$instance){
             self::$instance = new self;
@@ -19,7 +20,7 @@ class Spark_Admin_Menu
         add_action('admin_menu', array($this, 'spark_admin_menu_init'));
         add_action("admin_init", array($this, "spark_display_options"));
         add_action('admin_bar_menu', array($this, "spark_add_toolbar_items"), 80);
-
+        $this->wordpress_ip = do_shortcode('[show_ip]');
     }
 
 
@@ -51,13 +52,17 @@ class Spark_Admin_Menu
                                         $last_build_data = $this->get_last_build_row();
                                     ?>
                                     <p class="uk-form-horizontal">
-                                        <button 
-                                        type="submit" 
-                                        name="spark-build" 
-                                        id="spark-build" 
-                                        <?php echo ($last_build_data->status == '') || ($last_build_data->status == 'null')  || ($last_build_data->status == '201') ? 'disabled=true' : '' ;  ?>
-                                        class="uk-button uk-button-primary uk-button-medium" 
-                                        >Build</button>
+                                        <?php if($this->wordpress_ip !== '127.0.0.1'):?>
+                                            <button 
+                                            type="submit" 
+                                            name="spark-build" 
+                                            id="spark-build" 
+                                            <?php echo ($last_build_data->status == '') || ($last_build_data->status == 'null')  || ($last_build_data->status == '201') ? 'disabled=true' : '' ;  ?>
+                                            class="uk-button uk-button-primary uk-button-medium" 
+                                            >Build</button>
+                                        <?php else: ?>
+                                            <p class="uk-alert-warning uk-alert">You can not build from local</p>
+                                        <?php endif;?>
                                     </p>
                                 <?php else:?>
                                     <p>
@@ -87,7 +92,12 @@ class Spark_Admin_Menu
                                     <div class="build-status" id="build-status">
                                         <div class="uk-alert-primary uk-alert uk-margin-small-top" style="display:none">
                                             <a class="uk-alert-close" uk-close></a>
-                                            <p>You build request has been sent. Please wait for a while ..... </p>
+                                            <p>Your build request has been sent. Please wait for a while ..... </p>
+                                        </div>
+
+                                        <div class="uk-alert-warning uk-alert uk-margin-small-top ftp-details" style="display:none">
+                                            <a class="uk-alert-close" uk-close></a>
+                                            <p>Please setup your FTP/S3 configurations.</p>
                                         </div>
 
                                         <div class="uk-alert-success uk-alert uk-margin-small-top" style="display:none">
