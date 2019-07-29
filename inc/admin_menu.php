@@ -147,7 +147,7 @@ class Spark_Admin_Menu
                                                 <td class="build-message">
                                                     <span class="
                                                         <?php 
-                                                            if($data->status == '200'): 
+                                                            if($data->message == 'published'): 
                                                                 echo 'uk-text-success';
                                                             elseif($data->message == 'building'):
                                                                 echo 'uk-text-warning';
@@ -163,8 +163,10 @@ class Spark_Admin_Menu
                                                     </span>
                                                 </td>
                                                 <td class="build-status"><?php echo ucwords($data->status); ?></td>
-                                                <?php if( $data->status == '200'):?>
-                                                    <td class="check-status-button uk-text-truncate"><span class="uk-text-success">Success</span></td>
+                                                <?php if($data->message == 'published'): ?>
+                                                    <td class="check-status-button uk-text-truncate"><span class="uk-text-success">Done</span></td>
+                                                <?php elseif( $data->message == 'building'):?>
+                                                    <td class="check-status-button uk-text-truncate"><span class="uk-text-primary">Building</span></td>
                                                 <?php elseif($data->status == '500'): ?>
                                                     <td class="check-status-button uk-text-truncate"><span class="uk-text-danger">Build Failed</span></td>
                                                 <?php else: ?>
