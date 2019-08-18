@@ -41,10 +41,10 @@ foreach($files as $file){
 function spark_core_load(){
 	Spark_Admin_Menu::init();
     Spark_Media::init();
-    Spark_Routes::init();
     Spark_Route_Shop::init();
     Spark_Route_VerifyWP::init();
     Spark_Route_Buildstatus::init();
+    Spark_Route_Sitedata::init();
 }
 add_action('plugins_loaded', 'spark_core_load');
 

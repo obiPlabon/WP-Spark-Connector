@@ -10,7 +10,6 @@ function spark_get_connector_app_response(){
 	$token_status = add_option( 'spark_app_token', $token, '', 'yes');
 	// $key_status = add_option( 'tg_woo_key', $data['woocommerce_key'], '', 'yes');
 	// $secret_status = add_option( 'tg_woo_secret', $data['woocommerce_secret'], '', 'yes' );
-	// var_dump($data, $token);	
     die();
 }
 
@@ -39,7 +38,6 @@ function update_build_status(){
 	// 	$update_status = update_option('spark_build_count', $today_build_number, 'yes');
 	// 	var_dump('update status', $update_status);
 	// }
-	// var_dump($build_count, $insert_status);
 
 	die();
 }
@@ -74,7 +72,6 @@ function spark_remove_token(){
 	// 	$today_build_number = get_option('spark_build_count');
 	// 	$today_build_number += $data;
 	// 	$update_status = update_option('spark_build_count', $today_build_number, 'yes');
-	// 	var_dump('update status', $update_status);
 	// }
 	// return ['token_deleted'=> $toten_delete_status, 'count_deleted'=> $count_delete_status];
 	var_dump('token_deleted', $toten_delete_status, 'count_deleted', $count_delete_status);
