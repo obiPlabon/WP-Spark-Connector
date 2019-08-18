@@ -1,13 +1,13 @@
-### Spark
+## Spark
 <br>
 
-**Contributors:** themexpert, parvezvai, themesgrove, anam_themexpert, shamsbd71
-**Tags:** Gatsby, Application, ReactJs, Jamstack
-**Stable tag:** 1.0
-**Requires at least:** 4.8
-**Tested up to:** 5.0
-**Requires PHP:** 5.6 or higher
-**License:** GNU General Public License v2.0 or later
+**Contributors:** themexpert, parvezvai, themesgrove, anam_themexpert, shamsbd71  
+**Tags:** Gatsby, Application, ReactJs, Jamstack  
+**Stable tag:** 1.0  
+**Requires at least:** 4.8  
+**Tested up to:** 5.0  
+**Requires PHP:** 5.6 or higher  
+**License:** GNU General Public License v2.0 or later  
 
 
 If you like this plugin, then consider checking out our other projects:
