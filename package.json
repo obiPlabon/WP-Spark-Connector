@@ -1,0 +1,12 @@
+{
+  "name": "spark",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@gitlab.com:wpspark/wp-spark-connector.git",
+  "author": "anamwp <anam@themexpert.com>",
+  "license": "MIT",
+  "dependencies": {
+    "gulp": "^4.0.2",
+    "gulp-zip": "^5.0.0"
+  }
+}
