@@ -22,10 +22,6 @@ if (!defined('WPINC')) {
  */
 define('SPARK_CORE_ROOT', untrailingslashit(plugin_dir_path(__FILE__)));
 
-/**
-* plugin activation library
-*/
-// require SPARK_CORE_ROOT. '/libs/class-tgm-plugin-activation.php';
 
 /**
  * require all files from routes directory
@@ -91,7 +87,7 @@ function spark_get_page_slug()
 function spark_load_script_to_admin()
 {
     wp_enqueue_style('spark-core', plugin_dir_url(__FILE__) . 'assets/css/style.css');
-    wp_enqueue_style('uikit', 'https://cdnjs.cloudflare.com/ajax/libs/uikit/3.1.5/css/uikit.min.css');
+    wp_enqueue_style('uikit-style', plugin_dir_url(__FILE__) . 'assets/css/uikit.min.css');
     wp_enqueue_script('spark_script', plugin_dir_url(__FILE__) . 'assets/js/sparkScript.js', ['jquery'], '1.0', false);
     wp_localize_script('spark_script', 'adminUrl', [
         'ajaxurl' => admin_url('admin-ajax.php'),
