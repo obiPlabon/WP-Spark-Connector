@@ -40,7 +40,8 @@ foreach($files as $file){
 
 function spark_core_load(){
 	Spark_Admin_Menu::init();
-    Spark_Media::init();
+    Spark_Rest_Field_Media::init();
+    Spark_Rest_Field_User::init();
     Spark_Route_Shop::init();
     Spark_Route_VerifyWP::init();
     Spark_Route_Buildstatus::init();

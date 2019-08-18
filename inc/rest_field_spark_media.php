@@ -1,5 +1,5 @@
 <?php 
-class Spark_Media{
+class Spark_Rest_Field_Media{
     private static $instance;
 
     public static function init(){
