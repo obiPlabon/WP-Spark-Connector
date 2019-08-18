@@ -17,19 +17,20 @@ class Spark_Admin_Menu
 		$this->wpdb = $wpdb;
 
 		$this->table_name = $this->wpdb->prefix . 'spark_build';
-        add_action('admin_menu', array($this, 'spark_admin_menu_init'));
-        add_action("admin_init", array($this, "spark_display_options"));
-        add_action('admin_bar_menu', array($this, "spark_add_toolbar_items"), 80);
         $this->wordpress_ip = do_shortcode('[show_ip]');
+        add_action("admin_init", array($this, "spark_display_options"));
+        add_action('admin_menu', array($this, 'spark_admin_menu_init'));
+        add_action('admin_bar_menu', array($this, "spark_add_toolbar_items"), 80);
     }
 
 
     public function spark_admin_menu_init()
     {
-        # code...
-        // add_menu_page($page_title, $menu_title, $capability, $menu_slug, $function, $icon_url, $position)
+        /**
+         * syntax to add menu page
+         * add_menu_page($page_title, $menu_title, $capability, $menu_slug, $function, $icon_url, $position)
+         */
         add_menu_page('Spark', 'Spark', 'manage_options', 'spark', array($this, 'tg_connector_admin_menu'), plugin_dir_url(__DIR__). '/assets/images/wpspark-icon-25x.png', 2);
-        
 
     }
     public function tg_connector_admin_menu(){
@@ -49,7 +50,7 @@ class Spark_Admin_Menu
                                     
                                     <?php 
                                         $build_data = $this->spark_get_build_data(get_option('spark_app_token'));
-                                        $last_build_data = $this->get_last_build_row();
+                                        $last_build_data = $this->spark_get_last_build_row();
                                     ?>
                                     <p class="uk-form-horizontal">
                                         <?php if($this->wordpress_ip !== '127.0.0.1'):?>
@@ -221,11 +222,13 @@ class Spark_Admin_Menu
                                         <?php
 
                                             /**
+                                             * add_settings_section
+                                             * ====================
                                              * add_settings_section callback is displayed here. 
                                              * For every new section we need to call settings_fields.
                                              * settings_fields($option_group)
+                                             * settings_fields("header_section");
                                              */
-                                            // settings_fields("header_section");
                                             
                                             /**
                                              * all the add_settings_field callbacks is displayed here
@@ -235,6 +238,7 @@ class Spark_Admin_Menu
                                             do_settings_sections("spark");
                                             
                                             /**
+                                             * syntax of submit_button function
                                              * submit_button($text, $type, $name, $wrap, $other_attributes)
                                              */
                                             submit_button('Connect App'); 
@@ -274,10 +278,11 @@ class Spark_Admin_Menu
          * setting name, display name, callback to print form element, page in which field is displayed, section to which it belongs.
          * last field section is optional.
          * add_settings_field($id, $title, $callback, $page, $section, $args);
+         * in case if you need to add woocommerce settings field then add below code
+         * add_settings_field("spark_woo_token", "WooCommerce Key", array($this, "spark_woo_token"), "spark", "header_section");
+         * add_settings_field("spark_woo_secret", "WooCommerce Secret", array($this, "spark_woo_secret"), "spark", "header_section");
          */
         add_settings_field("spark_app_token", "Token", array($this, "spark_token"), "spark", "header_section");
-        // add_settings_field("spark_woo_token", "WooCommerce Key", array($this, "spark_woo_token"), "spark", "header_section");
-        // add_settings_field("spark_woo_secret", "WooCommerce Secret", array($this, "spark_woo_secret"), "spark", "header_section");
 
         /**
          * section name, form element name, callback for sanitization
@@ -300,7 +305,9 @@ class Spark_Admin_Menu
      */
     public function spark_token()
     {
-        //id and name of form element should be same as the setting name.
+        /**
+         * id and name of form element should be same as the setting name.
+         */
         ?>
         <input type="text" 
             name="spark_app_token" 
@@ -335,42 +342,16 @@ class Spark_Admin_Menu
                     'class' => __('spark-build-button')
                 ),
             ));
-            // $admin_bar->add_menu( array(
-            //     'id'    => 'my-sub-item',
-            //     'parent' => 'my-item',
-            //     'title' => 'My Sub Menu Item',
-            //     'href'  => '#',
-            //     'meta'  => array(
-            //         'title' => __('My Sub Menu Item'),
-            //         'target' => '_blank',
-            //         'class' => 'my_menu_item_class'
-            //     ),
-            // ));
-            // $admin_bar->add_menu( array(
-            //     'id'    => 'my-second-sub-item',
-            //     'parent' => 'my-item',
-            //     'title' => 'My Second Sub Menu Item',
-            //     'href'  => '#',
-            //     'meta'  => array(
-            //         'title' => __('My Second Sub Menu Item'),
-            //         'target' => '_blank',
-            //         'class' => 'my_menu_item_class'
-            //     ),
-            // ));
         }
     }
 
     public function spark_get_build_data($token){
         return $this->wpdb->get_results( "SELECT * FROM {$this->table_name} WHERE token='$token' ORDER BY id DESC  ");
     }
-    public function get_last_build_row(){
+    public function spark_get_last_build_row(){
         return $this->wpdb->get_row( "SELECT * FROM {$this->table_name} ORDER BY id DESC LIMIT 1");
     }
-    
 
 }
-
-
-
 
 ?>
