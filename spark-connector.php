@@ -46,6 +46,7 @@ function spark_core_load(){
     Spark_Route_VerifyWP::init();
     Spark_Route_Buildstatus::init();
     Spark_Route_Sitedata::init();
+    Spark_Route_Userdata::init();
 }
 add_action('plugins_loaded', 'spark_core_load');
 
