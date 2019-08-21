@@ -18,6 +18,6 @@ gulp.task('package', async function () {
       '!*.phar',
       '!*.xml',
   ])
-    .pipe(zip('spark.zip'))
+    .pipe(zip('wp-spark-connector.zip'))
     .pipe(gulp.dest('.'));
 });
