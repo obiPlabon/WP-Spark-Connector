@@ -1,6 +1,6 @@
-=== Spark ===
+=== WP Spark Connector ===
 Contributors: themexpert, parvezvai, themesgrove, anam_themexpert, shamsbd71
-Tags: Gatsby, Application, ReactJs, Jamstack
+Tags: Gatsby, Application, ReactJS, JamStack
 Stable tag: 1.0
 Requires at least: 4.8
 Tested up to: 5.0

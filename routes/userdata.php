@@ -1,5 +1,5 @@
 <?php
-class Spark_Route_Userdata{
+class WPSPARKCONNECTOR_Route_Userdata{
 
     private static $instance;
 
@@ -12,27 +12,26 @@ class Spark_Route_Userdata{
     }
 
     private function __construct(){
-        add_action( 'rest_api_init', array($this, 'spark_site_data_route') );
+        add_action( 'rest_api_init', array($this, 'wpsparkconnector_route') );
     }
 
     /**
      * Register your routes here
      * inside this functions
      */
-    public function spark_site_data_route(){
+    public function wpsparkconnector_route(){
         /**
          * return site favicon and logo
          * while you head this endpoint
          */
         register_rest_route('wp/v2', '/userdata', array(
             'methods' => 'get',
-            'callback' => array($this, 'spark_pull_site_user_data')
+            'callback' => array($this, 'wpsparkconnector_pull_site_user_data')
         ));
         
     }
 
-    public function spark_pull_site_user_data(){
-
+    public function wpsparkconnector_pull_site_user_data(){
         
         $site_data = [
             'favicon' => get_site_icon_url(),

@@ -2,7 +2,7 @@
 /**
  * Display User IP in WordPress
  */
-function get_the_user_ip() {
+function wpsparkconnector_get_the_user_ip() {
 	if ( ! empty( $_SERVER['HTTP_CLIENT_IP'] ) ) {
 		/**
 		 * check ip from share internet
@@ -19,5 +19,5 @@ function get_the_user_ip() {
 	return apply_filters( 'wpb_get_ip', $ip );
 }
 
-add_shortcode('show_ip', 'get_the_user_ip');
+add_shortcode('show_ip', 'wpsparkconnector_get_the_user_ip');
 

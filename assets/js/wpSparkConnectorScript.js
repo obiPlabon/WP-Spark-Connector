@@ -1,4 +1,6 @@
 jQuery( document ).ready( function($) {
+	
+	"use strict";
 
 	$('#already-has-token').on('click', function(){
 		$('#spark_annonymus').css('display', 'none');
@@ -86,19 +88,15 @@ jQuery( document ).ready( function($) {
 				},
 				beforeSend: function(){
 					$('.tg-app-connector #submit').val('Connecting');
-					// $('.'+ rowClass + '.check-status-button span').text('Checking Statuss');
 				},
 				success: function( response,  data, textStatus, xhr ) {
-					// $('.tg-app-connector #spark_app_token').val(response['token']);
-					// $('.tg-app-connector #tg_woo_key').val(response['woocommerce_key']);
-					// $('.tg-app-connector #tg_woo_secret').val(response['woocommerce_secret']);
 					$('.tg-app-connector #spark_app_token').attr("readonly", true);
 					$('.tg-app-connector #submit').val('Connected');
 					$('.tg-app-connector #submit').attr("disabled", true);
 					$('.tg-app-connector #submit').attr("id", "connected").attr("name", "connected");
 	
 					if(response && data == 'success'){
-						updateDbWithToken(response, getToken);
+						wpsparkconnectorUpdateDbWithToken(response, getToken);
 					}
 					
 				},
@@ -117,12 +115,12 @@ jQuery( document ).ready( function($) {
 	 * send token to admin ajax 
 	 * to save token in option table
 	 */
-	function updateDbWithToken(response, token){
+	function wpsparkconnectorUpdateDbWithToken(response, token){
 		$.ajax({
             url: adminUrl.ajaxurl,
 			method: 'post',
 			data:{
-				action: 'spark_get_connector_app_response',
+				action: 'wpsparkconnector_get_connector_app_response',
 				data: response,
 				token: token
 			},
@@ -143,8 +141,6 @@ jQuery( document ).ready( function($) {
 		e.preventDefault();
 		$(this).attr("disabled", true);
 		var getToken = $('.tg-app-connector #spark-app-token').val();
-		// var buildCount = +$('.tg-app-connector #spark-build-count').val();
-		// $('#build-status .uk-alert-primary').css('display', 'block');
 		$('#build-status .uk-alert-success').css('display', 'none');
 
 		$.ajax({
@@ -159,17 +155,6 @@ jQuery( document ).ready( function($) {
 				if(response && data == 'success'){
 					$('#build-status .build-details').css('display', 'block').append('<p>'+ response.message  +'</p>');
 				}
-				// setTimeout(function(){
-				// 	if(response && data == 'success'){
-				// 		// buildCount += 1;
-				// 		// $('.tg-app-connector #spark-build-count').val(buildCount);
-				// 		// updateBuildStatus('1');
-				// 		// console.log('connected');
-				// 		$('#build-status .uk-alert-primary').css('display', 'none');
-				// 		$('#build-status .uk-alert-success').css('display', 'block');
-				// 		$('.tg-app-connector #spark-build').attr("disabled", false);
-				// 	}
-				// }, 50000)
             },
             error: function(error, xhr, error_text, statusText) {
 				console.log(xhr, 'error text - ',error_text, 'status text - ', statusText);
@@ -200,7 +185,7 @@ jQuery( document ).ready( function($) {
             url: adminUrl.ajaxurl,
 			method: 'post',
 			data:{
-				action: 'update_build_status',
+				action: 'wpsparkconnector_update_build_status',
 				data: $status,
 				token: $token
 			},
@@ -219,7 +204,7 @@ jQuery( document ).ready( function($) {
 				url: adminUrl.ajaxurl,
 				method: 'post',
 				data:{
-					action: 'spark_remove_token',
+					action: 'wpsparkconnector_remove_token',
 				},
 				success: function( response,  data, textStatus, xhr ) {
 					location.reload();
@@ -246,12 +231,11 @@ jQuery( document ).ready( function($) {
 			url: adminUrl.ajaxurl,
 			method: 'post',
 			data:{
-				action: 'spark_check_build_status',
+				action: 'wpsparkconnector_check_build_status',
 				buildId: buildId
 			},
 			beforeSend: function(){
 				$('.'+ rowClass + '.check-status-button span').html('<img src='+ adminUrl.gifurl +' />');
-				// $('.'+ rowClass + '.check-status-button span').text('Checking Statuss');
 			},
 			success: function(response){
 				var data = JSON.parse(response);

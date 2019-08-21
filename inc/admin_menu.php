@@ -1,5 +1,5 @@
 <?php
-class Spark_Admin_Menu
+class WPSPARKCONNECTOR_Admin_Menu
 {
     private static $instance;
     private $wpdb;
@@ -18,22 +18,22 @@ class Spark_Admin_Menu
 
 		$this->table_name = $this->wpdb->prefix . 'spark_build';
         $this->wordpress_ip = do_shortcode('[show_ip]');
-        add_action("admin_init", array($this, "spark_display_options"));
-        add_action('admin_menu', array($this, 'spark_admin_menu_init'));
-        add_action('admin_bar_menu', array($this, "spark_add_toolbar_items"), 80);
+        add_action("admin_init", array($this, "wpsparkconnector_display_options"));
+        add_action('admin_menu', array($this, 'wpsparkconnector_admin_menu_init'));
+        add_action('admin_bar_menu', array($this, "wpsparkconnector_add_toolbar_items"), 80);
     }
 
 
-    public function spark_admin_menu_init()
+    public function wpsparkconnector_admin_menu_init()
     {
         /**
          * syntax to add menu page
          * add_menu_page($page_title, $menu_title, $capability, $menu_slug, $function, $icon_url, $position)
          */
-        add_menu_page('Spark', 'Spark', 'manage_options', 'spark', array($this, 'tg_connector_admin_menu'), plugin_dir_url(__DIR__). '/assets/images/wpspark-icon-25x.png', 2);
+        add_menu_page('Spark', 'Spark', 'manage_options', 'spark', array($this, 'wpsparkconnector_admin_menu'), plugin_dir_url(__DIR__). '/assets/images/wpspark-icon-25x.png', 2);
 
     }
-    public function tg_connector_admin_menu(){
+    public function wpsparkconnector_admin_menu(){
         ?>
         <div class="tg-app-connector uk-padding">
             <div class="wrap">
@@ -49,8 +49,8 @@ class Spark_Admin_Menu
                                 <?php if(get_option('spark_app_token')):?>
                                     
                                     <?php 
-                                        $build_data = $this->spark_get_build_data(get_option('spark_app_token'));
-                                        $last_build_data = $this->spark_get_last_build_row();
+                                        $build_data = $this->wpsparkconnector_get_build_data(get_option('spark_app_token'));
+                                        $last_build_data = $this->wpsparkconnector_get_last_build_row();
                                     ?>
                                     <p class="uk-form-horizontal">
                                         <?php if($this->wordpress_ip !== '127.0.0.1'):?>
@@ -187,7 +187,7 @@ class Spark_Admin_Menu
                                     </p>
                                     
                                     <ul class="uk-list uk-list-bullet">
-                                        <li><a href="http://app.wpspark.io/login">Login</a> to our portal</li>
+                                        <li><a target="_blank" href="http://app.wpspark.io/login">Login</a> to our portal</li>
                                         <li>Add your domain</li>
                                         <li>Built your site</li>
                                     </ul>
@@ -266,23 +266,23 @@ class Spark_Admin_Menu
      * 2. Add your settings field name by add_settings_field()
      * 3. Register settings fields to that settings fields by register_setting()
      */
-    public function spark_display_options()
+    public function wpsparkconnector_display_options()
     {
         /**
          * section name, display name, callback to print description of section, page to which section is attached.
          * add_settings_section($id, $title, $callback, $page)
          */
-        add_settings_section("header_section", "", array($this, "display_header_options_content"), "spark");
+        add_settings_section("header_section", "", array($this, "wpsparkconnector_display_header_options_content"), "spark");
 
         /**
          * setting name, display name, callback to print form element, page in which field is displayed, section to which it belongs.
          * last field section is optional.
          * add_settings_field($id, $title, $callback, $page, $section, $args);
          * in case if you need to add woocommerce settings field then add below code
-         * add_settings_field("spark_woo_token", "WooCommerce Key", array($this, "spark_woo_token"), "spark", "header_section");
-         * add_settings_field("spark_woo_secret", "WooCommerce Secret", array($this, "spark_woo_secret"), "spark", "header_section");
+         * add_settings_field("wpsparkconnector_woo_token", "WooCommerce Key", array($this, "wpsparkconnector_woo_token"), "spark", "header_section");
+         * add_settings_field("wpsparkconnector_woo_secret", "WooCommerce Secret", array($this, "wpsparkconnector_woo_secret"), "spark", "header_section");
          */
-        add_settings_field("spark_app_token", "Token", array($this, "spark_token"), "spark", "header_section");
+        add_settings_field("spark_app_token", "Token", array($this, "wpsparkconnector_token"), "spark", "header_section");
 
         /**
          * section name, form element name, callback for sanitization
@@ -298,12 +298,12 @@ class Spark_Admin_Menu
      * Heading title and
      * description text 
      */
-    public function display_header_options_content(){echo "";}
+    public function wpsparkconnector_display_header_options_content(){echo "";}
 
     /**
      * For settings body fields
      */
-    public function spark_token()
+    public function wpsparkconnector_token()
     {
         /**
          * id and name of form element should be same as the setting name.
@@ -316,14 +316,14 @@ class Spark_Admin_Menu
         />
         <?php
     }
-    public function spark_woo_token()
+    public function wpsparkconnector_woo_token()
     {   
         ?>
         <input type="text" name="tg_woo_key" id="tg_woo_key" readonly style="width:60%" value="<?php echo get_option('tg_woo_key'); ?>" />
         <?php
     }
     
-    public function spark_woo_secret()
+    public function wpsparkconnector_woo_secret()
     {   
         ?>
         <input type="text" name="tg_woo_secret" id="tg_woo_secret" readonly style="width:60%" value="<?php echo get_option('tg_woo_secret'); ?>" />
@@ -331,7 +331,7 @@ class Spark_Admin_Menu
     }
 
 
-    public function spark_add_toolbar_items($admin_bar){
+    public function wpsparkconnector_add_toolbar_items($admin_bar){
         if(get_option('spark_app_token')){
             $admin_bar->add_menu( array(
                 'id'    => 'tg-connector-build',
@@ -345,10 +345,10 @@ class Spark_Admin_Menu
         }
     }
 
-    public function spark_get_build_data($token){
+    public function wpsparkconnector_get_build_data($token){
         return $this->wpdb->get_results( "SELECT * FROM {$this->table_name} WHERE token='$token' ORDER BY id DESC  ");
     }
-    public function spark_get_last_build_row(){
+    public function wpsparkconnector_get_last_build_row(){
         return $this->wpdb->get_row( "SELECT * FROM {$this->table_name} ORDER BY id DESC LIMIT 1");
     }
 

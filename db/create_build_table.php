@@ -1,7 +1,7 @@
 <?php
-class Spark_Build{
+class WPSPARKCONNECTOR_Build{
     
-    public static function spark_create_build_table(){
+    public static function wpsparkconnector_create_build_table(){
         global $wpdb;
         $spark_build_db_version = '1.0.0';
         $table_name = $wpdb->prefix . 'spark_build';

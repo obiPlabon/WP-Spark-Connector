@@ -1,5 +1,5 @@
 <?php 
-class Spark_Rest_Field_Media{
+class WPSPARKCONNECTOR_Rest_Field_Media{
     private static $instance;
 
     public static function init(){
@@ -10,19 +10,19 @@ class Spark_Rest_Field_Media{
     }
 
     private function __construct(){
-        add_action( 'rest_api_init', array($this, 'spark_rest_fields') );
+        add_action( 'rest_api_init', array($this, 'wpsparkconnector_rest_fields') );
     }
     /**
      * create spark media field in wp rest api
      */
-    public function spark_rest_fields(){
+    public function wpsparkconnector_rest_fields(){
         register_rest_field( 'post',  'spark_media', array(
-            'get_callback'    => array($this, 'spark_add_spark_media'), 
+            'get_callback'    => array($this, 'wpsparkconnector_add_spark_media'), 
             'update_callback' => null,
             'schema'          => null,
         ));
     }
-    public function spark_add_spark_media($object, $field_name, $request){
+    public function wpsparkconnector_add_spark_media($object, $field_name, $request){
         $featured_img_array = wp_get_attachment_image_src(
             $object['featured_media'], 
             'full',  

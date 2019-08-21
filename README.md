@@ -1,4 +1,4 @@
-## Spark
+## WP Spark Connector
 <br>
 
 **Contributors:** themexpert, parvezvai, themesgrove, anam_themexpert, shamsbd71  

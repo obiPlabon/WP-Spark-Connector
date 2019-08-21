@@ -1,6 +1,6 @@
 <?php 
 
-class Spark_Route_Shop{
+class WPSPARKCONNECTOR_Route_Shop{
     private static $instance;
     private $wpdb;
     private $table_name;
@@ -17,7 +17,7 @@ class Spark_Route_Shop{
 		$this->wpdb = $wpdb;
         $this->table_name = $this->wpdb->prefix . 'spark_build';
         
-        add_action( 'rest_api_init', array($this, 'spark_routes') );
+        add_action( 'rest_api_init', array($this, 'wpsparkconnector_routes') );
 
     }
     /**
@@ -25,34 +25,28 @@ class Spark_Route_Shop{
      * receive request through rest api
      * to add product to cart
      *  */  
-    public function spark_routes(){
+    public function wpsparkconnector_routes(){
         register_rest_route( 'spark', '/shop', array(
             'methods' => 'GET',
-            'callback' => array($this, 'spark_shop_receive_api_request'),
+            'callback' => array($this, 'wpsparkconnector_shop_receive_api_request'),
         ) );
     }
 
     /**
      * add product to cart
      */
-    public function add_product_to_cart($product_id, $product_quantity="1",  $variation_id="", $variations=[]){
-        
-
+    public function wpsparkconnector_add_product_to_cart($product_id, $product_quantity="1",  $variation_id="", $variations=[]){
         
         global $woocommerce;
         $product_cart_status = false;
         $product = wc_get_product( $product_id );
         $title = $product->get_title();
-
         var_dump('product status', $title);
-
-
 
         /**
          * check if product is in the cart
          */
         $in_cart = WC()->cart->find_product_in_cart( $product_id );
-        
 
         /**
          * add product to cart 
@@ -73,7 +67,7 @@ class Spark_Route_Shop{
     /**
      * receive api request
      */
-    public function spark_shop_receive_api_request ($request){
+    public function wpsparkconnector_shop_receive_api_request ($request){
         global $woocommerce;
         session_start();
         $current_session = session_id();
@@ -85,7 +79,7 @@ class Spark_Route_Shop{
             $product_id = $request['product_id'];
             $product_add_status = [];
 
-            $status = $this->add_product_to_cart($product_id);
+            $status = $this->wpsparkconnector_add_product_to_cart($product_id);
             array_push($product_add_status, $status);
 
             /**
@@ -129,7 +123,6 @@ class Spark_Route_Shop{
                     $product_id = $split_the_string[0];
                     $variation_id = $split_the_string[1];
                     $variation_id = explode("|", $variation_id)[1];
-                    // var_dump('variation id', explode("|", $variation_id)[1]);
                     $product_quantity = $split_the_string[2];
                     $variations_str = array_slice($split_the_string, 3); 
 
@@ -140,18 +133,18 @@ class Spark_Route_Shop{
                         $variations[$key] = $value;
                     }
 
-                    $status = $this->add_product_to_cart( $product_id, $product_quantity, $variation_id, $variations);
+                    $status = $this->wpsparkconnector_add_product_to_cart( $product_id, $product_quantity, $variation_id, $variations);
                     array_push($product_add_status, $status);
                                 
                 }else{
                     var_dump('product idx', $product_id);
-                    $status = $this->add_product_to_cart($product_id);
+                    $status = $this->wpsparkconnector_add_product_to_cart($product_id);
                     array_push($product_add_status, $status);
                 }
                 /**
                  * unused code
                  * =============
-                 * $status = $this->add_product_to_cart($product_id);
+                 * $status = $this->wpsparkconnector_add_product_to_cart($product_id);
                  * array_push($product_add_status, $status);
                  */
                 
