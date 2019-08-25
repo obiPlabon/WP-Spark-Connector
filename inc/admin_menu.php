@@ -69,17 +69,17 @@ class WPSPARKCONNECTOR_Admin_Menu
                                                 name="spark-build" 
                                                 id="spark-build" 
                                                 class="uk-button uk-button-primary uk-button-medium">
-                                                    Build
+                                                    <?php esc_html_e('Build', 'wpsparkconnector');?>
                                                 </button>
                                             <?php endif; ?>
 
                                         <?php else: ?>
-                                            <p class="uk-alert-warning uk-alert">You can not build from local</p>
+                                            <p class="uk-alert-warning uk-alert"><?php esc_html_e('You can not build from local', 'wpsparkconnector');?></p>
                                         <?php endif;?>
                                     </p>
                                 <?php else:?>
                                     <p>
-                                        <span class="uk-label uk-label-danger uk-padding-small">Not connected</span>
+                                        <span class="uk-label uk-label-danger uk-padding-small"><?php esc_html_e('Not connected', 'wpsparkconnector')?></span>
                                     </p>
                                 <?php endif;?>
                             </div>
@@ -100,29 +100,29 @@ class WPSPARKCONNECTOR_Admin_Menu
                                     class="uk-input uk-form-width-large" 
                                     type="text" readonly placeholder="form-success" 
                                     value="<?php echo get_option('spark_app_token'); ?>">
-                                    <button href="#" id="disconnect_application" class="uk-button uk-button-danger uk-button-medium">Disconnecte</button>
+                                    <button href="#" id="disconnect_application" class="uk-button uk-button-danger uk-button-medium"><?php esc_html_e('Disconnect', 'wpsparkconnector')?></button>
                                     
                                     <div class="build-status" id="build-status">
                                         <div class="uk-alert-primary uk-alert uk-margin-small-top" style="display:none">
                                             <a class="uk-alert-close" uk-close></a>
-                                            <p>Your build request has been sent. Please wait for a while ..... </p>
+                                            <p> <?php esc_html_e('Your build request has been sent. Please wait for a while .....', 'wpsparkconnector')?> </p>
                                         </div>
 
                                         <div class="uk-alert-warning uk-alert uk-margin-small-top ftp-details" style="display:none">
                                             <a class="uk-alert-close" uk-close></a>
-                                            <p>Please setup your FTP/S3 configurations.</p>
+                                            <p><?php esc_html_e('Please setup your FTP/S3 configurations.', 'wpsparkconnector')?></p>
                                         </div>
                                         
                                         <div class="uk-alert-primary uk-alert uk-margin-small-top build-details" style="display:none"></div>
 
                                         <div class="uk-alert-success uk-alert uk-margin-small-top" style="display:none">
                                             <a class="uk-alert-close" uk-close></a>
-                                            <p>Congrutulatio! Your site has been successfully build for the new change.</p>
+                                            <p><?php esc_html_e('Congrutulatio! Your site has been successfully build for the new change.', 'wpsparkconnector');?></p>
                                         </div>
 
                                         <div class="uk-alert-danger uk-alert uk-margin-small-top" style="display:none">
                                             <a class="uk-alert-close" uk-close></a>
-                                            <p>There are some problem occurs while build process is happenning. Please contact with support.</p>
+                                            <p><?php esc_html_e('There are some problem occurs while build process is happenning. Please contact with support.', 'wpsparkconnector')?></p>
                                         </div>
                                     </div>
 
@@ -131,20 +131,20 @@ class WPSPARKCONNECTOR_Admin_Menu
                                     <table class="uk-table uk-table-small uk-table-middle uk-table-hover uk-table-divider uk-table-striped ">
                                         <thead>
                                             <tr>
-                                                <th>Id</th>
-                                                <th class="uk-width-small">Time</th>
-                                                <th class="uk-width-small">Token</th>
-                                                <th>Message</th>
-                                                <th>Status Code</th>
-                                                <th>Status</th>
+                                                <th><?php esc_html_e('Id', 'wpsparkconnector')?></th>
+                                                <th class="uk-width-small"><?php esc_html_e('Time', 'wpsparkconnector')?></th>
+                                                <th class="uk-width-small"><?php esc_html_e('Token', 'wpsparkconnector')?></th>
+                                                <th><?php esc_html_e('Message', 'wpsparkconnector')?></th>
+                                                <th><?php esc_html_e('Status Code', 'wpsparkconnector')?></th>
+                                                <th><?php esc_html_e('Status', 'wpsparkconnector')?></th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php foreach($build_data as $data):?>
-                                            <tr class="build-data-row-<?php echo $data->id; ?> ">
-                                                <td class="build-id"><?php echo $data->id; ?></td>
-                                                <td class="build-time"><?php echo $data->time; ?></td>
-                                                <td class="build-token"><?php echo $data->token; ?></td>
+                                            <tr class="build-data-row-<?php echo esc_html($data->id); ?> ">
+                                                <td class="build-id"><?php echo esc_html($data->id); ?></td>
+                                                <td class="build-time"><?php echo esc_html($data->time); ?></td>
+                                                <td class="build-token"><?php echo esc_html($data->token); ?></td>
                                                 <td class="build-message">
                                                     <span class="
                                                         <?php 
@@ -165,11 +165,11 @@ class WPSPARKCONNECTOR_Admin_Menu
                                                 </td>
                                                 <td class="build-status"><?php echo ucwords($data->status); ?></td>
                                                 <?php if($data->message == 'published'): ?>
-                                                    <td class="check-status-button uk-text-truncate"><span class="uk-text-success">Done</span></td>
+                                                    <td class="check-status-button uk-text-truncate"><span class="uk-text-success"><?php esc_html_e('Done', 'wpsparkconnector')?></span></td>
                                                 <?php elseif($data->status == '500'): ?>
-                                                    <td class="check-status-button uk-text-truncate"><span class="uk-text-danger">Build Failed</span></td>
+                                                    <td class="check-status-button uk-text-truncate"><span class="uk-text-danger"><?php esc_html_e('Build Failed', 'wpsparkconnector')?></span></td>
                                                 <?php else: ?>
-                                                    <td class="check-status-button uk-text-truncate"><span id="check-build-status" class="check-build-status uk-button uk-button-default uk-alert-primary" type="button">Check Status</span></td>
+                                                    <td class="check-status-button uk-text-truncate"><span id="check-build-status" class="check-build-status uk-button uk-button-default uk-alert-primary" type="button"><?php esc_html_e('Check Status', 'wpsparkconnector')?></span></td>
                                                 <?php endif;?>
                                             </tr>
                                             <?php endforeach;?>
@@ -183,13 +183,13 @@ class WPSPARKCONNECTOR_Admin_Menu
                                 <div class="uk-padding uk-width-2-3">
                                     
                                     <p class="uk-text-large uk-text-bold">
-                                        To build your site
+                                        <?php esc_html_e('To build your site', 'wpsparkconnector')?>
                                     </p>
                                     
                                     <ul class="uk-list uk-list-bullet">
-                                        <li><a target="_blank" href="http://app.wpspark.io/login">Login</a> to our portal</li>
-                                        <li>Add your domain</li>
-                                        <li>Built your site</li>
+                                        <li><a target="_blank" href="http://app.wpspark.io/login"><?php esc_html_e('Login', 'wpsparkconnector')?></a> <?php esc_html_e('to our portal', 'wpsparkconnector')?></li>
+                                        <li><?php esc_html_e('Add your domain', 'wpsparkconnector')?></li>
+                                        <li><?php esc_html_e('Built your site', 'wpsparkconnector')?></li>
                                     </ul>
                                 </div>
                                 <div class="uk-padding uk-padding-remove-right uk-flex uk-flex-middle">
@@ -198,12 +198,12 @@ class WPSPARKCONNECTOR_Admin_Menu
                                             <input class="uk-input uk-form-large" type="email" placeholder="Your email address to register"/>
                                         </div>
                                         <?php if($this->wordpress_ip !== '127.0.0.1'):?>
-                                        <a href="http://app.wpspark.io/register" target="_blank" id="register-input" class="uk-width-1-1 uk-button uk-button-danger uk-button-large uk-margin-small-bottom">Register For API keys</a>
+                                        <a href="http://app.wpspark.io/register" target="_blank" id="register-input" class="uk-width-1-1 uk-button uk-button-danger uk-button-large uk-margin-small-bottom"><?php esc_html_e('Register For API keys', 'wpsparkconnector')?></a>
                                         <br/>
-                                        <a href="#" id="already-has-token" class="uk-width-1-1 uk-button uk-button-primary uk-button-large">Already have API keys</a>
+                                        <a href="#" id="already-has-token" class="uk-width-1-1 uk-button uk-button-primary uk-button-large"><?php esc_html_e('Already have API keys', 'wpsparkconnector')?></a>
                                         <?php else:?>
                                             <a href="http://app.wpspark.io/register" target="_blank" class="uk-width-1-1 uk-button uk-button-default uk-label-danger uk-button-large uk-margin-small-bottom">
-                                                Register to Build
+                                                <?php esc_html_e('Register to Build', 'wpsparkconnector')?>
                                             </a>
                                         <?php endif;?>
                                         
@@ -215,8 +215,8 @@ class WPSPARKCONNECTOR_Admin_Menu
                                 
                                 <div class="uk-padding">
                                     <ul class="uk-breadcrumb">
-                                        <li><a class="show_resgistration_state" href="#">Register Account</a></li>
-                                        <li><a href="#">Connect Account</a></li>
+                                        <li><a class="show_resgistration_state" href="#"><?php esc_html_e('Register Account', 'wpsparkconnector')?></a></li>
+                                        <li><a href="#"><?php esc_html_e('Connect Account', 'wpsparkconnector')?></a></li>
                                     </ul>
                                     <form method="post" action="options.php" class="connect-app-form">
                                         <?php
@@ -346,10 +346,10 @@ class WPSPARKCONNECTOR_Admin_Menu
     }
 
     public function wpsparkconnector_get_build_data($token){
-        return $this->wpdb->get_results( "SELECT * FROM {$this->table_name} WHERE token='$token' ORDER BY id DESC  ");
+        return $this->wpdb->get_results( $this->wpdb->prepare("SELECT * FROM {$this->table_name} WHERE token='%s' ORDER BY id DESC ", $token) );
     }
     public function wpsparkconnector_get_last_build_row(){
-        return $this->wpdb->get_row( "SELECT * FROM {$this->table_name} ORDER BY id DESC LIMIT 1");
+        return $this->wpdb->get_row( $this->wpdb->prepare("SELECT * FROM {$this->table_name} ORDER BY id DESC LIMIT %d", 1 ));
     }
 
 }

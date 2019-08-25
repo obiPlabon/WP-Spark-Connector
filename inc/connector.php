@@ -9,10 +9,13 @@
 add_action('wp_ajax_wpsparkconnector_get_connector_app_response', 'wpsparkconnector_get_connector_app_response');
 add_action('wp_ajax_nopriv_wpsparkconnector_get_connector_app_response', 'wpsparkconnector_get_connector_app_response');
 function wpsparkconnector_get_connector_app_response(){
-	$data = $_POST['data'];
-	$token = $_POST['token'];
-	$token_status = add_option( 'spark_app_token', $token, '', 'yes');
-    die();
+	check_ajax_referer( 'wpsparkconnector_nonce', 'security' );
+	if(current_user_can('administrator')):
+		$data = sanitize_text_field($_POST['data']);
+		$token = sanitize_text_field($_POST['token']);
+		$token_status = add_option( 'spark_app_token', $token, '', 'yes');
+	endif;
+	die();
 }
 
 
@@ -24,15 +27,16 @@ function wpsparkconnector_get_connector_app_response(){
 add_action('wp_ajax_wpsparkconnector_update_build_status', 'wpsparkconnector_update_build_status');
 add_action('wp_ajax_nopriv_wpsparkconnector_update_build_status', 'wpsparkconnector_update_build_status');
 function wpsparkconnector_update_build_status(){
-	$data = $_POST['data'];
-	$token = $_POST['token'];
-	$data = (int) $data;
-
-	$db_time = current_time( 'mysql' );
-	$message = 'Start building';
-	$status = 'null';
-	$insert_status = wpsparkconnector_insert_into_build_table($db_time, $message, $status, $token);
-
+	check_ajax_referer( 'wpsparkconnector_nonce', 'security' );
+	if(current_user_can('administrator')):
+		$data = sanitize_text_field($_POST['data']);
+		$token = sanitize_text_field($_POST['token']);
+		$data = (int) $data;
+		$db_time = current_time( 'mysql' );
+		$message = 'Start building';
+		$status = 'null';
+		$insert_status = wpsparkconnector_insert_into_build_table($db_time, $message, $status, $token);
+	endif;
 	die();
 }
 function wpsparkconnector_insert_into_build_table($time, $message, $status, $token){
@@ -46,10 +50,16 @@ function wpsparkconnector_insert_into_build_table($time, $message, $status, $tok
 			'message' => $message, 
 			'token' => $token, 
 			'status' => $status, 
+		),
+		array( 
+			'%s',
+			'%s',
+			'%s',
+			'%s'
 		) 
 	);
-	return $data_insert_status;
 
+	return $data_insert_status;
 }
 
 /**
@@ -59,8 +69,11 @@ function wpsparkconnector_insert_into_build_table($time, $message, $status, $tok
 add_action('wp_ajax_wpsparkconnector_remove_token', 'wpsparkconnector_remove_token');
 add_action('wp_ajax_nopriv_wpsparkconnector_remove_token', 'wpsparkconnector_remove_token');
 function wpsparkconnector_remove_token(){
-	$toten_delete_status = delete_option('spark_app_token');
-	$count_delete_status = delete_option('spark_build_count');
+	check_ajax_referer( 'wpsparkconnector_nonce', 'security' );
+	if(current_user_can('administrator')):
+		$toten_delete_status = delete_option('spark_app_token');
+		$count_delete_status = delete_option('spark_build_count');
+	endif;
 	die();
 }
 
@@ -72,17 +85,20 @@ function wpsparkconnector_remove_token(){
 add_action('wp_ajax_wpsparkconnector_check_build_status', 'wpsparkconnector_check_build_status');
 add_action('wp_ajax_nopriv_wpsparkconnector_check_build_status', 'wpsparkconnector_check_build_status');
 function wpsparkconnector_check_build_status(){
-	try {
-		global $wpdb;
-		$table_name = $wpdb->prefix . 'spark_build';
-		$build_id = $_REQUEST['buildId'];
-	
-		$get_build_status_data = $wpdb->get_row( "SELECT * FROM {$table_name} WHERE id={$build_id}" );
-		echo json_encode($get_build_status_data);
-	}
-	catch(Exception $e){
-		echo 'Message: '.$e->getMessage();
-	}
+	check_ajax_referer( 'wpsparkconnector_nonce', 'security' );
+	if(current_user_can('administrator')):
+		try {
+			global $wpdb;
+			$table_name = $wpdb->prefix . 'spark_build';
+			$build_id = sanitize_text_field($_REQUEST['buildId']);
+		
+			$get_build_status_data = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$table_name} WHERE id = %s",  $build_id ) );
+			echo json_encode($get_build_status_data);
+		}
+		catch(Exception $e){
+			echo 'Message: '.$e->getMessage();
+		}
+	endif;
 	die();
 }
 

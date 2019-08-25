@@ -104,6 +104,7 @@ function wpsparkconnector_load_script_to_admin()
     wp_enqueue_script('wpsparkconnector_script', plugin_dir_url(__FILE__) . 'assets/js/wpSparkConnectorScript.js', ['jquery'], '1.0', false);
     wp_localize_script('wpsparkconnector_script', 'adminUrl', [
         'ajaxurl' => admin_url('admin-ajax.php'),
+        'ajax_nonce' => wp_create_nonce('wpsparkconnector_nonce'),
         'mysiteurl' => site_url(),
         'gifurl' => plugin_dir_url(__FILE__) . 'assets/images/ajax-loader.gif'
     ]);

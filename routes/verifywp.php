@@ -38,7 +38,7 @@ class WPSPARKCONNECTOR_Route_VerifyWP{
      */
     public function wpsparkconnector_verify_wp_site($request){
         if(! $request['token']){die("You are not allowed baby !!!");}
-        $requested_token = $_GET['token'];
+        $requested_token = sanitize_text_field($_GET['token']);
         $saved_token = get_option('spark_app_token');
         if($saved_token === $requested_token){
             return 'Verified';

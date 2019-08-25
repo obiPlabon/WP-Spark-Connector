@@ -39,6 +39,7 @@ jQuery( document ).ready( function($) {
 							name:email,
 							email:email,
 							domain:adminUrl.mysiteurl,
+							security: adminUrl.ajax_nonce
 						},
 						beforeSend: function(){
 							$('a.register-new-user').html('<img src='+ adminUrl.gifurl +' />');
@@ -84,7 +85,8 @@ jQuery( document ).ready( function($) {
 				data:{
 					token: getToken,
 					domain: adminUrl.mysiteurl,
-					no_build: true
+					no_build: true,
+					security: adminUrl.ajax_nonce
 				},
 				beforeSend: function(){
 					$('.tg-app-connector #submit').val('Connecting');
@@ -122,7 +124,8 @@ jQuery( document ).ready( function($) {
 			data:{
 				action: 'wpsparkconnector_get_connector_app_response',
 				data: response,
-				token: token
+				token: token,
+				security: adminUrl.ajax_nonce
 			},
 			success:function(response){
 				location.reload();
@@ -148,7 +151,8 @@ jQuery( document ).ready( function($) {
 			method: 'post',
 			data:{
 				token: getToken,
-				domain: adminUrl.mysiteurl
+				domain: adminUrl.mysiteurl,
+				security: adminUrl.ajax_nonce
 			},
             success: function( response,  data, textStatus, xhr ) {
 				updateBuildStatus('1', getToken);
@@ -187,7 +191,8 @@ jQuery( document ).ready( function($) {
 			data:{
 				action: 'wpsparkconnector_update_build_status',
 				data: $status,
-				token: $token
+				token: $token,
+				security: adminUrl.ajax_nonce
 			},
 		})
 	}
@@ -205,6 +210,7 @@ jQuery( document ).ready( function($) {
 				method: 'post',
 				data:{
 					action: 'wpsparkconnector_remove_token',
+					security: adminUrl.ajax_nonce
 				},
 				success: function( response,  data, textStatus, xhr ) {
 					location.reload();
@@ -232,7 +238,8 @@ jQuery( document ).ready( function($) {
 			method: 'post',
 			data:{
 				action: 'wpsparkconnector_check_build_status',
-				buildId: buildId
+				buildId: buildId,
+				security: adminUrl.ajax_nonce
 			},
 			beforeSend: function(){
 				$('.'+ rowClass + '.check-status-button span').html('<img src='+ adminUrl.gifurl +' />');

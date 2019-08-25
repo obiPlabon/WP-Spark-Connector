@@ -33,8 +33,8 @@ class WPSPARKCONNECTOR_Route_Buildstatus{
     }
     
     public function wpsparkconnector_get_build_status($request){
-        $request_message = $_GET['message'];
-        $request_status = $_GET['status'];
+        $request_message = sanitize_text_field($_GET['message']);
+        $request_status = sanitize_text_field($_GET['status']);
 
         /**
          * build message status
@@ -52,7 +52,7 @@ class WPSPARKCONNECTOR_Route_Buildstatus{
          * update_option($option, $value, $autoload)
          */
                 
-        $null_row = $this->wpdb->get_row( "SELECT * FROM {$this->table_name} WHERE token='$this->token' ORDER BY id DESC LIMIT 1" );
+        $null_row = $this->wpdb->get_row( $this->wpdb->prepare("SELECT * FROM {$this->table_name} WHERE token='%s' ORDER BY id DESC LIMIT 1",  $this->token ));
         
         if($null_row){
             if( ($null_row->status === 'null') || ($null_row->message == 'building') ) {
@@ -73,7 +73,13 @@ class WPSPARKCONNECTOR_Route_Buildstatus{
                 'token' => $token,
                 'status' => $status
             ), 
-            array( 'id' => $id ) 
+            array( 'id' => $id ),
+            array( 
+                '%s',
+                '%s',
+                '%s'
+            ), 
+            array( '%d' ) 
         );
     }
     
